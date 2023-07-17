@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ui/FolderView.qml</file>
+        <file>ui/main.qml</file>
+    </qresource>
+</RCC>
