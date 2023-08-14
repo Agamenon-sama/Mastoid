@@ -5,6 +5,8 @@ import Qt.labs.folderlistmodel
 Rectangle {
     color: "#eee"
 
+    signal folderChanged(newFolder: string)
+
     ListView {
         id: list
         anchors.fill: parent
@@ -51,6 +53,7 @@ Rectangle {
                             console.log("fileUrl = " + fileUrl + "; filePath = " + filePath)
                             folderModel.folder = fileUrl
                             // list.currentIndex = 0
+                            folderChanged(fileUrl)
                         } else {
                             popup.text = fileName
                             popup.open()

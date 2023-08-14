@@ -25,7 +25,8 @@ ApplicationWindow {
         }
     }
 
-    Rectangle {
+    CoverArt {
+        id: coverArt
         width: parent.width * 0.4
         anchors {
             top: parent.top

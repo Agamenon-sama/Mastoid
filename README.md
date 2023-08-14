@@ -10,14 +10,14 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
     - implement playlists
     - make it possible to change the seek time of the player
     - change the look of the progression bar and volume bar
-    - rearrange the layout
+    - re-arrange the layout
     - get better icons
 - file browser
     - go back button
     - maybe filtering non-relevant files
     - better ui
 - image view
-    - implement it
+    - make it possible to accept jpg covers and set the default cover if no pic is provided (requires C++ so I'll leave it for later)
 - settings menu
     - I should start by thinking how to integrate it in the ui
 - spectrum viewer ?

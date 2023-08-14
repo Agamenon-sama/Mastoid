@@ -6,5 +6,7 @@
         <file>icons/mute.png</file>
         <file>icons/pause.png</file>
         <file>icons/play.png</file>
+        <file>ui/CoverArt.qml</file>
+        <file>icons/defaultCover.png</file>
     </qresource>
 </RCC>
