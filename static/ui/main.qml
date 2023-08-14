@@ -36,7 +36,7 @@ ApplicationWindow {
         color: "#777"
     }
 
-    AudioControl {
+    PlayerControl {
         id: playerBlock
         height: parent.height * 0.15
         anchors {
@@ -54,6 +54,7 @@ ApplicationWindow {
             audioOutput: AudioOutput {
                 id: audio
                 muted: playerBlock.muted
+                volume: playerBlock.volume
             }
         }
     }

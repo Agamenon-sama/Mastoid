@@ -2,6 +2,9 @@
     <qresource prefix="/">
         <file>ui/FolderView.qml</file>
         <file>ui/main.qml</file>
-        <file>ui/AudioControl.qml</file>
+        <file>ui/PlayerControl.qml</file>
+        <file>icons/mute.png</file>
+        <file>icons/pause.png</file>
+        <file>icons/play.png</file>
     </qresource>
 </RCC>
