@@ -9,8 +9,13 @@ Rectangle {
 
     ListView {
         id: list
-        anchors.fill: parent
-        // anchors.margins: 5
+        anchors {
+            bottom: parent.bottom
+            top: topBar.bottom
+        }
+        width: parent.width
+        height: parent.height - topBar.height
+
 
         model: FolderListModel {
             id: folderModel
@@ -48,15 +53,10 @@ Rectangle {
 
                     onClicked: {
                         console.log("Clicked " + fileName)
-                        // list.currentIndex = index
                         if (folderModel.isFolder(index)) {
                             console.log("fileUrl = " + fileUrl + "; filePath = " + filePath)
-                            folderModel.folder = fileUrl
-                            // list.currentIndex = 0
-                            folderChanged(fileUrl)
+                            changeFolder(fileUrl, fileBaseName)
                         } else {
-                            popup.text = fileName
-                            popup.open()
                             player.source = fileUrl
                             player.play()
                         }
@@ -90,8 +90,65 @@ Rectangle {
 
         focus: true
     }
-    MessageDialog {
-        id: popup
-        title: "you clicked on a file"
+
+    Rectangle {
+        id: topBar
+
+        anchors {
+            top: parent.top
+        }
+        width: parent.width
+        height: 50
+        color: "transparent"
+
+        Text {
+            id: titleTxt
+            text: "title"
+            color: "black"
+
+            anchors {
+                verticalCenter: parent.verticalCenter
+                horizontalCenter: parent.horizontalCenter
+            }
+        }
+
+        Rectangle {
+            id: backButton
+
+            Text {
+                 text: "◁"
+                 color: "black"
+
+                 anchors {
+                     verticalCenter: parent.verticalCenter
+                     horizontalCenter: parent.horizontalCenter
+                 }
+            }
+
+            anchors {
+                top: parent.top
+                left: parent.left
+            }
+
+            height: parent.height
+            width: parent.height
+            color: "transparent"
+
+            MouseArea {
+                anchors.fill: parent
+
+                onClicked: {
+                    // fixme: the title must be set to the base name after we press on the btn
+                    // for now the title is set to "title"
+                    changeFolder(folderModel.parentFolder, "title")
+                }
+            }
+        }
+    }
+
+    function changeFolder(folderPath, baseName) {
+        folderModel.folder = folderPath
+        titleTxt.text = baseName
+        folderChanged(folderModel.folder)
     }
 }

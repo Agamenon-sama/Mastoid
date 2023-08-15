@@ -13,7 +13,7 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
     - re-arrange the layout
     - get better icons
 - file browser
-    - go back button
+    - fix the title when the back button is pressed
     - maybe filtering non-relevant files
     - better ui
 - image view
