@@ -19,7 +19,7 @@ Rectangle {
         to: 1.0
         value: player.position / player.duration
 
-        // onValueChanged: player.setPosition(value * player.duration)
+        onMoved: player.setPosition(value * player.duration)
     }
 
     RowLayout {

@@ -8,7 +8,6 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
 
 - music player
     - implement playlists
-    - make it possible to change the seek time of the player
     - change the look of the progression bar and volume bar
     - re-arrange the layout
     - get better icons
