@@ -20,6 +20,33 @@ Rectangle {
         value: player.position / player.duration
 
         onMoved: player.setPosition(value * player.duration)
+
+        background: Rectangle {
+            x: playbackSlider.leftPadding
+            y: playbackSlider.topPadding + playbackSlider.availableHeight / 2 - height / 2
+            implicitHeight: 4
+            implicitWidth: 100
+            height: implicitHeight
+            width: playbackSlider.availableWidth
+            radius: 2
+            color: "#505050"
+
+            Rectangle {
+                width: playbackSlider.visualPosition * parent.width
+                height: parent.height
+                radius: 2
+                color: "grey"
+            }
+        }
+
+        handle: Rectangle {
+            x: playbackSlider.leftPadding + playbackSlider.visualPosition * (playbackSlider.availableWidth - width)
+            y: playbackSlider.topPadding + playbackSlider.availableHeight / 2 - height / 2
+            implicitHeight: 14
+            implicitWidth: 14
+            radius: 8
+            color: "grey"
+        }
     }
 
     RowLayout {
@@ -101,6 +128,34 @@ Rectangle {
 
             to: 100.0
             value: 100.0
+
+
+            background: Rectangle {
+                x: volumeSlider.leftPadding
+                y: volumeSlider.topPadding + volumeSlider.availableHeight / 2 - height / 2
+                implicitHeight: 4
+                implicitWidth: 100
+                height: implicitHeight
+                width: volumeSlider.availableWidth
+                radius: 2
+                color: "#505050"
+
+                Rectangle {
+                    width: volumeSlider.visualPosition * parent.width
+                    height: parent.height
+                    radius: 2
+                    color: "grey"
+                }
+            }
+
+            handle: Rectangle {
+                x: volumeSlider.leftPadding + volumeSlider.visualPosition * (volumeSlider.availableWidth - width)
+                y: volumeSlider.topPadding + volumeSlider.availableHeight / 2 - height / 2
+                implicitHeight: 14
+                implicitWidth: 14
+                radius: 8
+                color: "grey"
+            }
 
             /*handle: Rectangle {
                 // anchors.centerIn: parent
