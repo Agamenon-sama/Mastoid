@@ -13,7 +13,10 @@ Rectangle {
         id: playbackSlider
 
         width: parent.width - 10
-        anchors.margins: 5
+        anchors {
+            top: root.top
+            horizontalCenter: parent.horizontalCenter
+        }
         enabled: player.seekable
 
         to: 1.0
@@ -49,46 +52,86 @@ Rectangle {
         }
     }
 
-    RowLayout {
-        anchors.top: playbackSlider.bottom
+    Text {
+        id: currentTime
 
-        Rectangle {
-            id: playBtn
+        anchors {
+            top: playbackSlider.bottom
+            left: playbackSlider.left
+        }
 
-            Image {
-                id: playIcon
-                source: "qrc:/icons/play.png"
-                height: parent.height * 0.55
-                fillMode: Image.PreserveAspectFit
+        text: {
+            var m  = Math.floor(player.position / 60000)
+            var ms = Math.floor(player.position / 1000 - m * 60).toString()
+            return `${m}:${ms.padStart(2, 0)}`
+        }
+        color: "grey"
+    }
+    Text {
+        id: durationTime
 
-                anchors {
-                    verticalCenter: parent.verticalCenter
-                    horizontalCenter: parent.horizontalCenter
-                }
+        anchors {
+            top: playbackSlider.bottom
+            right: playbackSlider.right
+        }
+
+        text: {
+            var m  = Math.floor(player.duration / 60000)
+            var ms = Math.floor(player.duration / 1000 - m * 60).toString()
+            return `${m}:${ms.padStart(2, 0)}`
+        }
+        color: "grey"
+    }
+
+    Rectangle {
+        id: playBtn
+
+        anchors {
+            top: durationTime.bottom
+            horizontalCenter: parent.horizontalCenter
+        }
+
+        Image {
+            id: playIcon
+            source: "qrc:/icons/play.png"
+            height: parent.height * 0.55
+            fillMode: Image.PreserveAspectFit
+
+            anchors {
+                verticalCenter: parent.verticalCenter
+                horizontalCenter: parent.horizontalCenter
             }
+        }
 
-            width: 50
-            height: 50
-            radius: 50
-            color: "transparent"
-            border.width: 2
-            border.color: "grey"
-            // x: 0
+        width: 50
+        height: 50
+        radius: 50
+        color: "transparent"
+        border.width: 2
+        border.color: "grey"
+        // x: 0
 
-            MouseArea {
-                anchors.fill: parent
+        MouseArea {
+            anchors.fill: parent
 
-                onClicked: {
-                    if (player.playbackState == MediaPlayer.PlayingState) {
-                        player.pause()
-                        playIcon.source = "qrc:/icons/play.png"
-                    } else {
-                        player.play()
-                        playIcon.source = "qrc:/icons/pause.png"
-                    }
+            onClicked: {
+                if (player.playbackState == MediaPlayer.PlayingState) {
+                    player.pause()
+                    playIcon.source = "qrc:/icons/play.png"
+                } else {
+                    player.play()
+                    playIcon.source = "qrc:/icons/pause.png"
                 }
             }
         }
+    }
+    RowLayout {
+        id: volumeRow
+        anchors {
+            top: durationTime.bottom
+            right: durationTime.right
+        }
+
         Rectangle {
             id: muteBtn
 
@@ -157,28 +200,29 @@ Rectangle {
                 color: "grey"
             }
 
-            /*handle: Rectangle {
-                // anchors.centerIn: parent
-                color: "grey"
-                implicitWidth: 12
-                implicitHeight: 12
-                radius: 12
-                x: volumeSlider.leftPadding + volumeSlider.visualPosition * (volumeSlider.availableWidth - width)
-                y: volumeSlider.topPadding + volumeSlider.availableHeight / 2 - height / 2
-            }*/
-            /*panel: Rectangle {
-                color: "grey"
-            }*/
+                /*handle: Rectangle {
+                    // anchors.centerIn: parent
+                    color: "grey"
+                    implicitWidth: 12
+                    implicitHeight: 12
+                    radius: 12
+                    x: volumeSlider.leftPadding + volumeSlider.visualPosition * (volumeSlider.availableWidth - width)
+                    y: volumeSlider.topPadding + volumeSlider.availableHeight / 2 - height / 2
+                }*/
+                /*panel: Rectangle {
+                    color: "grey"
+                }*/
 
-            /*style: SliderStyle {
-                groove: Rectangle {
-                    implicitWidth: 200
-                    implicitHeight: 8
-                    color: "gray"
-                    radius: 8
-                }
-            }*/
+                /*style: SliderStyle {
+                    groove: Rectangle {
+                        implicitWidth: 200
+                        implicitHeight: 8
+                        color: "gray"
+                        radius: 8
+                    }
+                }*/
         }
     }
+
 
 }
