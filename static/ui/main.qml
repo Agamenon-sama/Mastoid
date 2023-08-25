@@ -14,6 +14,13 @@ ApplicationWindow {
 
     color: "#1e1e1e"
 
+    BackgroundTexture {
+        id: backTexture
+
+        width: parent.width;
+        height: parent.height;
+    }
+
     FolderView {
         id: folderView
 
@@ -34,7 +41,7 @@ ApplicationWindow {
             left: parent.left
         }
 
-        color: "#777"
+        color: "transparent"
     }
 
     PlayerControl {

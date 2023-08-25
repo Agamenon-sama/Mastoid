@@ -8,5 +8,10 @@
         <file>icons/play.png</file>
         <file>ui/CoverArt.qml</file>
         <file>icons/defaultCover.png</file>
+        <file>shaders/background.frag</file>
+        <file>shaders/background.frag.qsb</file>
+        <file>shaders/background.vert</file>
+        <file>shaders/background.vert.qsb</file>
+        <file>ui/BackgroundTexture.qml</file>
     </qresource>
 </RCC>

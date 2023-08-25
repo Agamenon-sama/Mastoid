@@ -3,7 +3,7 @@ import QtQuick.Dialogs
 import Qt.labs.folderlistmodel
 
 Rectangle {
-    color: "#eee"
+    color: "transparent"
 
     signal folderChanged(newFolder: string)
 
