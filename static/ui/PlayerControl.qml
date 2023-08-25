@@ -9,6 +9,16 @@ Rectangle {
     property bool muted: false
     property real volume: volumeSlider.value/100.0
 
+    function play() {
+        player.play()
+        playIcon.source = "qrc:/icons/pause.png"
+    }
+
+    function pause() {
+        player.pause()
+        playIcon.source = "qrc:/icons/play.png"
+    }
+
     Slider {
         id: playbackSlider
 
@@ -116,11 +126,9 @@ Rectangle {
 
             onClicked: {
                 if (player.playbackState == MediaPlayer.PlayingState) {
-                    player.pause()
-                    playIcon.source = "qrc:/icons/play.png"
+                    pause()
                 } else {
-                    player.play()
-                    playIcon.source = "qrc:/icons/pause.png"
+                    play()
                 }
             }
         }
@@ -225,4 +233,11 @@ Rectangle {
     }
 
 
+    Connections {
+        target: folderView
+        function onFilePressed(name) {
+            player.source = name;
+            play();
+        }
+    }
 }

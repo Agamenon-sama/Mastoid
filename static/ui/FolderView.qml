@@ -6,6 +6,7 @@ Rectangle {
     color: "transparent"
 
     signal folderChanged(newFolder: string)
+    signal filePressed(fileName: string)
 
     ListView {
         id: list
@@ -54,11 +55,12 @@ Rectangle {
                     onClicked: {
                         console.log("Clicked " + fileName)
                         if (folderModel.isFolder(index)) {
-                            console.log("fileUrl = " + fileUrl + "; filePath = " + filePath)
+//                            console.log("fileUrl = " + fileUrl + "; filePath = " + filePath)
                             changeFolder(fileUrl, fileBaseName)
                         } else {
-                            player.source = fileUrl
-                            player.play()
+                            filePressed(fileUrl)
+//                            player.source = fileUrl
+//                            player.play()
                         }
                     }
 
