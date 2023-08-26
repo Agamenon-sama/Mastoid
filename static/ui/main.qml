@@ -5,6 +5,8 @@ import QtQuick.Dialogs
 import QtMultimedia
 
 ApplicationWindow {
+    id: parentWindow
+
     width: 1080
     height: 600
     visible: true

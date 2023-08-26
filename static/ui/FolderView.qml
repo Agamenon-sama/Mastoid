@@ -13,8 +13,9 @@ Rectangle {
         anchors {
             bottom: parent.bottom
             top: topBar.bottom
+            left: parent.left
         }
-        width: parent.width
+        width: parent.width * 0.97
         height: parent.height - topBar.height
 
 
@@ -32,7 +33,7 @@ Rectangle {
             Rectangle {
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
-                    x: 5
+                    x: 15
                     text: {
                         if (fileIsDir) {
                             return fileName + "/"
@@ -41,7 +42,11 @@ Rectangle {
                         return fileName
                     }
 
-                    color: "black"
+                    font {
+                        weight: 600
+                    }
+
+                    color: "#ddd"
                 }
                 height: 50
                 width: list.width
@@ -62,7 +67,7 @@ Rectangle {
                     }
 
                     hoverEnabled: true
-                    onEntered: parent.color = "#fff"
+                    onEntered: parent.color = "#80808080"
                     onExited: parent.color = "transparent"
                 }
             }
@@ -84,7 +89,11 @@ Rectangle {
         Text {
             id: titleTxt
             text: "title"
-            color: "black"
+            font {
+                weight: 600
+            }
+
+            color: "#ddd"
 
             anchors {
                 verticalCenter: parent.verticalCenter
@@ -97,7 +106,11 @@ Rectangle {
 
             Text {
                  text: "◁"
-                 color: "black"
+                 font {
+                     weight: 600
+                 }
+
+                 color: "#ddd"
 
                  anchors {
                      verticalCenter: parent.verticalCenter

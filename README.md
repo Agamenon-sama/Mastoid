@@ -19,12 +19,11 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
 - settings menu
     - I should start by thinking how to integrate it in the ui
 - background image
-    - make a better blur effect
-    - the image sometimes doesn't fill correctly (especially with small pictures). fix that
+    - make a better blur effect (I think I also want to add a grayscaling effect)
 - spectrum viewer ?
 - keyboard shortcuts
 
-The ui in general needs to lot of work still, but I'll focus on the features first.
+Still not fully satisfied with the ui and the functional requirements but it's not terrible.
 
 ## Dependencies
 

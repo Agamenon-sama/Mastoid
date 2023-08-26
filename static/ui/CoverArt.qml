@@ -7,7 +7,7 @@ Rectangle {
         id: coverImage
         source: "qrc:/icons/defaultCover.png"
 
-        width: parent.width
+        width: parent.width * 0.85
         fillMode: Image.PreserveAspectFit
 
         anchors {
