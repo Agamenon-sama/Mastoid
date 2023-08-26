@@ -37,7 +37,7 @@ For the shaders, notice how there are the `.frag` and `.vert` files which contai
 
 Basically with Qt 6, they decided that rather than putting the shaders in a string along with the qml files, shaders should instead be written inside shader files and then a program called qsb must "bake" thes into qsb files which are files that contain different versions of the shader for different APIs. The qsb file are the ones that are loaded by the Qt quick app.
 
-I'm sure that helps with portability but it increases the build complexity because now you need the qsb program in your build tool.
+I'm sure that helps with portability but it increases the build complexity because now you need the qsb program in your build chain.
 
 To bake the shader, I used the qsb program like this:
 
@@ -51,4 +51,8 @@ qsb should be shipped with your Qt installation. I found it in `~/Qt/<qt_version
 It should be possible to integrate this with cmake but I've read it's buggy. I'll check this out later and hopefully automate this in the future.
 
 For now and to make things simpler if someone just wants to compile and run this app, I have put the baked shaders in this repo. If you want to mess with the shader, you will have to mess with qsb.
+
+## License
+
+GNU General Public License v3.0
 
