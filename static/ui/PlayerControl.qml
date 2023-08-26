@@ -1,6 +1,5 @@
 import QtQuick 2.0
 import QtQuick.Controls
-// import QtQuick.Controls.Styles 1.4
 import QtQuick.Layouts
 import QtMultimedia
 
@@ -207,28 +206,6 @@ Rectangle {
                 radius: 8
                 color: "grey"
             }
-
-                /*handle: Rectangle {
-                    // anchors.centerIn: parent
-                    color: "grey"
-                    implicitWidth: 12
-                    implicitHeight: 12
-                    radius: 12
-                    x: volumeSlider.leftPadding + volumeSlider.visualPosition * (volumeSlider.availableWidth - width)
-                    y: volumeSlider.topPadding + volumeSlider.availableHeight / 2 - height / 2
-                }*/
-                /*panel: Rectangle {
-                    color: "grey"
-                }*/
-
-                /*style: SliderStyle {
-                    groove: Rectangle {
-                        implicitWidth: 200
-                        implicitHeight: 8
-                        color: "gray"
-                        radius: 8
-                    }
-                }*/
         }
     }
 

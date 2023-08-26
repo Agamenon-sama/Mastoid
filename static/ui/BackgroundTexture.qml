@@ -11,7 +11,6 @@ Rectangle {
         fillMode: Image.PreserveAspectFit
 
         anchors {
-//            verticalCenter: parent.verticalCenter
             horizontalCenter: parent.horizontalCenter
             top: parent.top
 

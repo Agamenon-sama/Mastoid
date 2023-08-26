@@ -55,12 +55,9 @@ Rectangle {
                     onClicked: {
                         console.log("Clicked " + fileName)
                         if (folderModel.isFolder(index)) {
-//                            console.log("fileUrl = " + fileUrl + "; filePath = " + filePath)
                             changeFolder(fileUrl, fileBaseName)
                         } else {
                             filePressed(fileUrl)
-//                            player.source = fileUrl
-//                            player.play()
                         }
                     }
 
@@ -70,25 +67,6 @@ Rectangle {
                 }
             }
         }
-
-        /*highlight: Rectangle {
-            /*Text {
-                text: {
-                    if (folderModel.get(list.currentIndex, "fileIsDir")) {
-                        return folderModel.get(list.currentIndex, "fileName") + "/"
-                    }
-
-                    return folderModel.get(list.currentIndex, "fileName")
-                }
-                color: "#000"
-            }
-            height: 50
-            width: list.width
-            color: "#555"
-            radius: 5
-            // y: list.currentItem.y
-            // Behavior on y { SpringAnimation { spring: 2; damping: 0.2 } }
-        }*/
 
         focus: true
     }
