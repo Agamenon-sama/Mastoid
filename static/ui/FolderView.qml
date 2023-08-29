@@ -17,6 +17,7 @@ Rectangle {
         }
         width: parent.width * 0.97
         height: parent.height - topBar.height
+        clip: true
 
 
         model: FolderListModel {
