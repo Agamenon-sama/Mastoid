@@ -55,7 +55,7 @@ Rectangle {
     Connections {
         target: folderView
         function onFolderChanged(name) {
-            backImage.source = name + "/cover.png"
+            backImage.source = FileSystemHelper.findCoverUrl(name);
         }
     }
 }

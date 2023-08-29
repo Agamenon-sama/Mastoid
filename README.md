@@ -14,8 +14,6 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
     - fix the title when the back button is pressed
     - maybe filtering non-relevant files
     - better ui
-- image view
-    - make it possible to accept jpg covers and set the default cover if no pic is provided (requires C++ so I'll leave it for later)
 - settings menu
     - I should start by thinking how to integrate it in the ui
 - background image
