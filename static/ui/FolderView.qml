@@ -25,8 +25,7 @@ Rectangle {
             showDirs: true
             showDirsFirst: true
             nameFilters: ["*.mp3", "*.ogg", "*.flac"]
-            // todo: change the folder to something more dynamic
-            folder: "file:/home/agamenon/Music"
+            folder: FileSystemHelper.findMusicDirectory();
         }
 
         delegate: Component {
@@ -145,5 +144,11 @@ Rectangle {
         folderModel.folder = folderPath
         titleTxt.text = baseName
         folderChanged(folderModel.folder)
+    }
+
+    function getInitFolder() {
+        var x = FileSystemHelper.findMusicDirectory();
+        console.log(x);
+        return x;
     }
 }
