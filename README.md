@@ -12,8 +12,6 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
     - get better icons
 - file browser
     - fix the title when the back button is pressed
-    - maybe filtering non-relevant files
-    - better ui
 - settings menu
     - I should start by thinking how to integrate it in the ui
 - background image

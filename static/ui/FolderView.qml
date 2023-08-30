@@ -24,6 +24,7 @@ Rectangle {
             id: folderModel
             showDirs: true
             showDirsFirst: true
+            nameFilters: ["*.mp3", "*.ogg", "*.flac"]
             // todo: change the folder to something more dynamic
             folder: "file:/home/agamenon/Music"
         }
