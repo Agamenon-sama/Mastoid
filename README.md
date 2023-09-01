@@ -12,8 +12,6 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
     - implement playlists
     - re-arrange the layout
     - get better icons
-- file browser
-    - fix the title when the back button is pressed
 - settings menu
     - I should start by thinking how to integrate it in the ui
 - background image

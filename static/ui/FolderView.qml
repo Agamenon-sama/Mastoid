@@ -89,7 +89,7 @@ Rectangle {
 
         Text {
             id: titleTxt
-            text: "title"
+            text: "Music"
             font {
                 weight: 600
             }
@@ -132,9 +132,13 @@ Rectangle {
                 anchors.fill: parent
 
                 onClicked: {
-                    // fixme: the title must be set to the base name after we press on the btn
-                    // for now the title is set to "title"
-                    changeFolder(folderModel.parentFolder, "title")
+                    // This way that I am using to determine the name of the folder
+                    // may not be portable because it relies on the fact that the
+                    // file separator is the '/' character which is not the case on windows
+                    // todo: test it once I decide to care about windows
+                    var parent = folderModel.parentFolder;
+                    var subStrings = parent.toString().split('/');
+                    changeFolder(parent, subStrings[subStrings.length-1]);
                 }
             }
         }
