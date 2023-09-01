@@ -4,6 +4,8 @@ Mastoid is a file based music player.
 
 There is no accounts, no subscriptions, no need for internet access, no complex music folders... Just organize your files in a decent hierarchical layout and enjoy.
 
+![screenshot](screenshot.png)
+
 ## To do
 
 - music player
