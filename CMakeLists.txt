@@ -11,6 +11,7 @@ find_package(Qt6 6.2 COMPONENTS Quick REQUIRED)
 qt_add_executable(mastoid
     src/main.cpp
     src/FileSystemHelper.h src/FileSystemHelper.cpp
+    src/AppConfiguration.h src/AppConfiguration.cpp
     static/res.qrc
 )
 

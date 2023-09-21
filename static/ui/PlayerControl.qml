@@ -217,4 +217,9 @@ Rectangle {
             play();
         }
     }
+
+    Component.onCompleted: {
+        player.source = AppConfiguration.getStartupFile();
+        play();
+    }
 }
