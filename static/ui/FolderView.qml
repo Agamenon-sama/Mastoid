@@ -24,7 +24,7 @@ Rectangle {
             id: folderModel
             showDirs: true
             showDirsFirst: true
-            nameFilters: ["*.mp3", "*.ogg", "*.flac"]
+            nameFilters: ["*.mp3", "*.ogg", "*.flac", "*.wav"]
             folder: FileSystemHelper.findMusicDirectory();
         }
 
