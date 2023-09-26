@@ -7,8 +7,8 @@ import QtMultimedia
 ApplicationWindow {
     id: parentWindow
 
-    width: 1080
-    height: 600
+    width: AppConfiguration.width
+    height: AppConfiguration.height
     visible: true
     title: qsTr("Mastoid")
 
