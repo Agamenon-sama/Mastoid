@@ -11,7 +11,6 @@ public:
     explicit FileSystemHelper(QObject *parent = nullptr);
 
     Q_INVOKABLE QUrl findCoverUrl(QString searchFolder) const;
-    Q_INVOKABLE QUrl findMusicDirectory() const;
 
 signals:
 

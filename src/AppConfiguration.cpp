@@ -9,6 +9,7 @@ AppConfiguration::AppConfiguration(const QCommandLineParser &parser)
     , _width(1080), _height(600) {
 
     _configFileName = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/mastoid/config";
+    _baseDirectory = "file:" + QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
 
     if (parser.value("f") != "") {
         _startupFileName = parser.value("f");
@@ -49,6 +50,13 @@ void AppConfiguration::_parseConfig() {
         else if (key == "window_height") {
             bool ok;
             _height = value.toInt(&ok);
+            continue;
+        }
+        else if (key == "base_directory") {
+            if (value.left(2) == "~/") {
+                value = QDir::homePath() + "/" + value.remove(0, 2);
+            }
+            _baseDirectory = "file:" + value;
             continue;
         }
     }

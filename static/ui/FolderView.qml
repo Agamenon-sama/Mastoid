@@ -25,7 +25,7 @@ Rectangle {
             showDirs: true
             showDirsFirst: true
             nameFilters: ["*.mp3", "*.ogg", "*.flac", "*.wav"]
-            folder: FileSystemHelper.findMusicDirectory();
+            folder: AppConfiguration.baseDirectory
         }
 
         delegate: Component {

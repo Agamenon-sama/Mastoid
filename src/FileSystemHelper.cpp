@@ -33,15 +33,3 @@ QUrl FileSystemHelper::findCoverUrl(QString searchFolder) const {
     // else we return the default cover
     return QUrl(u"qrc:/icons/defaultCover.png"_qs);
 }
-
-QUrl FileSystemHelper::findMusicDirectory() const {
-    // get home directory
-    auto home = QDir::home();
-    // search it for a Music folder
-    auto list = home.entryList();
-    if (list.contains("Music")) {
-        return "file:" + home.path() + "/Music";
-    }
-    // if we can't find a Music directory, return the home directory
-    return QUrl("file:" + home.path());
-}
