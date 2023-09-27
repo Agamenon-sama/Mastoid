@@ -39,6 +39,11 @@ void AppConfiguration::_parseConfig() {
     QTextStream fileIn(&file);
     while (!fileIn.atEnd()) {
         auto line = fileIn.readLine().trimmed();
+
+        // remove anything after any # sign
+        line = line.left(line.indexOf('#')).trimmed();
+        if (line == "") continue; // if there is nothing left, go to next line
+
         auto key = line.section('=', 0, 0).trimmed();
         auto value = line.section('=', 1, 1).trimmed();
 
