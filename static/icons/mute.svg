@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.0"
+   width="512"
+   height="512"
+   viewBox="0 0 76.8 76.8"
+   id="svg3212"
+   sodipodi:docname="mute.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs3216" />
+  <sodipodi:namedview
+     id="namedview3214"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     showgrid="false"
+     inkscape:zoom="0.6675088"
+     inkscape:cx="84.643079"
+     inkscape:cy="276.40085"
+     inkscape:window-width="1366"
+     inkscape:window-height="702"
+     inkscape:window-x="0"
+     inkscape:window-y="34"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3212"
+     showguides="true" />
+  <path
+     d="m 38.41234,13.9095 -17.154,14.837 H 5.0233406 v 19.093 H 21.01234 l 17.4,15.051 z"
+     style="fill:#262425;fill-opacity:1;stroke:#262425;stroke-width:4.99995;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="path3208" />
+  <rect
+     style="fill:#262425;fill-opacity:1;stroke:#262425;stroke-width:4.50995;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="rect5904"
+     width="1.458498"
+     height="34.128906"
+     x="68.685905"
+     y="-32.173809"
+     rx="0.729249"
+     ry="0.92262399"
+     transform="rotate(45)" />
+  <rect
+     style="fill:#262425;fill-opacity:1;stroke:#262425;stroke-width:4.50995;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+     id="rect5908"
+     width="1.458498"
+     height="34.128906"
+     x="14.380107"
+     y="52.350704"
+     rx="0.729249"
+     ry="0.92262399"
+     transform="rotate(-45)" />
+</svg>

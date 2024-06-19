@@ -7,7 +7,7 @@ Comment=Music player
 Exec=mastoid --file=%U
 
 # Place icon file in ~/.local/share/icons or similar, or give full pathname
-# Icon=
+Icon=Mastoid
 
 MimeType=audio/x-mp3;audio/x-mpeg;audio/mpeg;
 # The following should match the executable basename

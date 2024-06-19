@@ -10,12 +10,12 @@ Rectangle {
 
     function play() {
         player.play()
-        playIcon.source = "qrc:/icons/pause.png"
+        playIcon.source = "qrc:/icons/pause.svg"
     }
 
     function pause() {
         player.pause()
-        playIcon.source = "qrc:/icons/play.png"
+        playIcon.source = "qrc:/icons/play.svg"
     }
 
     Slider {
@@ -102,7 +102,7 @@ Rectangle {
 
         Image {
             id: playIcon
-            source: "qrc:/icons/play.png"
+            source: "qrc:/icons/play.svg"
             height: parent.height * 0.55
             fillMode: Image.PreserveAspectFit
 
@@ -144,7 +144,7 @@ Rectangle {
 
             Image {
                 id: muteIcon
-                source: "qrc:/icons/mute.png"
+                source: "qrc:/icons/mute.svg"
                 height: parent.height * 0.55
                 fillMode: Image.PreserveAspectFit
 

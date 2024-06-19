@@ -5,7 +5,7 @@ Rectangle {
 
     Image {
         id: backImage
-        source: "qrc:/icons/defaultCover.png"
+        source: "qrc:/icons/Mastoid.png"
 
         // I'm ashamed to say I got lost a bit while solving this calculation of the width
         // and height which means I'm not sure anymore how this fully works but IT DOES WORK.

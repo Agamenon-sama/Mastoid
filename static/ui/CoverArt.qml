@@ -5,7 +5,7 @@ Rectangle {
 
     Image {
         id: coverImage
-        source: "qrc:/icons/defaultCover.png"
+        source: "qrc:/icons/Mastoid.png"
 
         width: parent.width * 0.85
         fillMode: Image.PreserveAspectFit

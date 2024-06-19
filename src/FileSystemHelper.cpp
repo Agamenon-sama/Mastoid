@@ -31,5 +31,5 @@ QUrl FileSystemHelper::findCoverUrl(QString searchFolder) const {
     }
 
     // else we return the default cover
-    return QUrl(u"qrc:/icons/defaultCover.png"_qs);
+    return QUrl(u"qrc:/icons/Mastoid.png"_qs);
 }
