@@ -39,59 +39,59 @@ Rectangle {
                         var ms = Math.floor(player.position / 1000 - m * 60).toString()
                         return `${m}:${ms.padStart(2, 0)}`
                     }
-                    color: "white"
+                    color: "#ddd"
                 }
-            Slider {
-                id: playbackSlider
+                Slider {
+                    id: playbackSlider
 
-                Layout.fillWidth: true
+                    Layout.fillWidth: true
 
-                enabled: player.seekable
+                    enabled: player.seekable
 
-                to: 1.0
-                value: player.position / player.duration
+                    to: 1.0
+                    value: player.position / player.duration
 
-                onMoved: player.setPosition(value * player.duration)
+                    onMoved: player.setPosition(value * player.duration)
 
-                background: Rectangle {
-                    x: playbackSlider.leftPadding
-                    y: playbackSlider.topPadding + playbackSlider.availableHeight / 2 - height / 2
-                    implicitHeight: 4
-                    implicitWidth: 100
-                    height: implicitHeight
-                    width: playbackSlider.availableWidth
-                    radius: 2
-                    color: "#888"
-
-                    Rectangle {
-                        width: playbackSlider.visualPosition * parent.width
-                        height: parent.height
+                    background: Rectangle {
+                        x: playbackSlider.leftPadding
+                        y: playbackSlider.topPadding + playbackSlider.availableHeight / 2 - height / 2
+                        implicitHeight: 4
+                        implicitWidth: 100
+                        height: implicitHeight
+                        width: playbackSlider.availableWidth
                         radius: 2
+                        color: "#888"
+
+                        Rectangle {
+                            width: playbackSlider.visualPosition * parent.width
+                            height: parent.height
+                            radius: 2
+                            color: themeColor
+                        }
+                    }
+
+                    handle: Rectangle {
+                        x: playbackSlider.leftPadding + playbackSlider.visualPosition * (playbackSlider.availableWidth - width)
+                        y: playbackSlider.topPadding + playbackSlider.availableHeight / 2 - height / 2
+                        implicitHeight: 14
+                        implicitWidth: 14
+                        radius: 8
                         color: themeColor
                     }
                 }
 
-                handle: Rectangle {
-                    x: playbackSlider.leftPadding + playbackSlider.visualPosition * (playbackSlider.availableWidth - width)
-                    y: playbackSlider.topPadding + playbackSlider.availableHeight / 2 - height / 2
-                    implicitHeight: 14
-                    implicitWidth: 14
-                    radius: 8
-                    color: themeColor
+
+                Text {
+                    id: durationTime
+
+                    text: {
+                        var m  = Math.floor(player.duration / 60000)
+                        var ms = Math.floor(player.duration / 1000 - m * 60).toString()
+                        return `${m}:${ms.padStart(2, 0)}`
+                    }
+                    color: "#ddd"
                 }
-            }
-
-
-            Text {
-                id: durationTime
-
-                text: {
-                    var m  = Math.floor(player.duration / 60000)
-                    var ms = Math.floor(player.duration / 1000 - m * 60).toString()
-                    return `${m}:${ms.padStart(2, 0)}`
-                }
-                color: "white"
-            }
 
             }
         }
@@ -128,6 +128,8 @@ Rectangle {
 
                     MouseArea {
                         anchors.fill: parent
+
+                        cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
                             if (player.playbackState == MediaPlayer.PlayingState) {
@@ -170,6 +172,8 @@ Rectangle {
                         MouseArea {
                             anchors.fill: parent
 
+                            cursorShape: Qt.PointingHandCursor
+
                             onClicked: {
                                 if (root.muted) {
                                     root.muted = false
@@ -187,7 +191,6 @@ Rectangle {
 
                         to: 100.0
                         value: 100.0
-
 
                         background: Rectangle {
                             x: volumeSlider.leftPadding
@@ -230,7 +233,7 @@ Rectangle {
                     verticalCenter: parent.verticalCenter
                 }
 
-                color: "white"
+                color: "#ddd"
 
                 text: ""
             }

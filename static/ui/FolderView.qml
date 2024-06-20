@@ -9,7 +9,7 @@ Rectangle {
     signal filePressed(fileName: string)
 
     ListView {
-        id: list
+        id: fileList
         anchors {
             bottom: parent.bottom
             top: topBar.bottom
@@ -50,7 +50,7 @@ Rectangle {
                     color: "#ddd"
                 }
                 height: 50
-                width: list.width
+                width: fileList.width
                 color: "transparent"
                 radius: 10
 
@@ -58,8 +58,9 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
 
+                    cursorShape: Qt.PointingHandCursor
+
                     onClicked: {
-                        console.log("Clicked " + fileName)
                         if (folderModel.isFolder(index)) {
                             changeFolder(fileUrl, fileBaseName)
                         } else {
@@ -105,18 +106,16 @@ Rectangle {
         Rectangle {
             id: backButton
 
-            Text {
-                 text: "◁"
-                 font {
-                     weight: 600
-                 }
+            Image {
+                id: backIcon
+                source: "qrc:/icons/back.svg"
+                height: parent.height * 0.5
+                fillMode: Image.PreserveAspectFit
 
-                 color: "#ddd"
-
-                 anchors {
-                     verticalCenter: parent.verticalCenter
-                     horizontalCenter: parent.horizontalCenter
-                 }
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    horizontalCenter: parent.horizontalCenter
+                }
             }
 
             anchors {
@@ -130,6 +129,8 @@ Rectangle {
 
             MouseArea {
                 anchors.fill: parent
+
+                cursorShape: Qt.PointingHandCursor
 
                 onClicked: {
                     // This way that I am using to determine the name of the folder
