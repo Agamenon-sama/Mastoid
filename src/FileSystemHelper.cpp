@@ -14,20 +14,15 @@ QUrl FileSystemHelper::findCoverUrl(QString searchFolder) const {
 
     // depending on this order of priority, if the file exists,
     //  we return the cover with these extensions
-    if (list.contains("cover.webp")) {
-        return searchFolder + "/cover.webp";
-    }
+    std::vector<QString> possibleCoverFiles = {
+        "cover.webp", "cover.png", "cover.jpg", "cover.jpeg",
+        "folder.webp", "folder.png", "folder.jpg", "folder.jpeg"
+    };
 
-    if (list.contains("cover.png")) {
-        return searchFolder + "/cover.png";
-    }
-
-    if (list.contains("cover.jpg")) {
-        return searchFolder + "/cover.jpg";
-    }
-
-    if (list.contains("cover.jpeg")) {
-        return searchFolder + "/cover.jpeg";
+    for (const auto& coverFile : possibleCoverFiles) {
+        if (list.contains(coverFile)) {
+            return searchFolder + "/" + coverFile;
+        }
     }
 
     // else we return the default cover
