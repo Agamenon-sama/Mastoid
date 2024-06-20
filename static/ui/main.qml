@@ -46,7 +46,7 @@ ApplicationWindow {
 
     PlayerControl {
         id: playerBlock
-        height: parent.height * 0.15
+        height: parent.height * 0.18
         anchors {
             bottom: parent.bottom
             left: parent.left

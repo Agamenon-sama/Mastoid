@@ -11,7 +11,6 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
 
 - music player
     - implement playlists
-    - re-arrange the layout
 - settings menu
     - I should start by thinking how to integrate it in the ui
 - background image
