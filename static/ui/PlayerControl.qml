@@ -144,7 +144,7 @@ Rectangle {
 
             Image {
                 id: muteIcon
-                source: "qrc:/icons/mute.svg"
+                source: "qrc:/icons/speaker.svg"
                 height: parent.height * 0.55
                 fillMode: Image.PreserveAspectFit
 
@@ -166,8 +166,10 @@ Rectangle {
                 onClicked: {
                     if (root.muted) {
                         root.muted = false
+                        muteIcon.source = "qrc:/icons/speaker.svg"
                     } else {
                         root.muted = true
+                        muteIcon.source = "qrc:/icons/mute.svg"
                     }
                 }
             }
