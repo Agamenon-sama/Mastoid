@@ -117,6 +117,7 @@ Rectangle {
                     source: "qrc:/icons/play.svg"
                     height: parent.height * 0.55
                     fillMode: Image.PreserveAspectFit
+                    mipmap: true
 
                     anchors {
                         verticalCenter: parent.verticalCenter
@@ -212,6 +213,7 @@ Rectangle {
                         source: "qrc:/icons/speaker.svg"
                         height: parent.height * 0.55
                         fillMode: Image.PreserveAspectFit
+                        mipmap: true
 
                         anchors {
                             verticalCenter: parent.verticalCenter

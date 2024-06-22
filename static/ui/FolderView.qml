@@ -43,6 +43,7 @@ Rectangle {
                         anchors.centerIn: parent
                         height: parent.height * 0.7
                         fillMode: Image.PreserveAspectFit
+                        mipmap: true
 
                         source: {
                             if (fileIsDir) {
@@ -189,6 +190,7 @@ Rectangle {
                 source: "qrc:/icons/back.svg"
                 height: parent.height * 0.5
                 fillMode: Image.PreserveAspectFit
+                mipmap: true
 
                 anchors {
                     verticalCenter: parent.verticalCenter
