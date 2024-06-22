@@ -15,5 +15,6 @@
         <file>icons/speaker.svg</file>
         <file>icons/Mastoid.png</file>
         <file>icons/back.svg</file>
+        <file>ui/ShortcutComponent.qml</file>
     </qresource>
 </RCC>

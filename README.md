@@ -16,7 +16,6 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
 - background image
     - make a better blur effect (I think I also want to add a grayscaling effect)
 - spectrum viewer ?
-- keyboard shortcuts
 
 Still not fully satisfied with the ui and the functional requirements but it's not terrible.
 

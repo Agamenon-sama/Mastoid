@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.9
 import QtQuick.Dialogs
 import Qt.labs.folderlistmodel
 
@@ -10,6 +10,7 @@ Rectangle {
 
     ListView {
         id: fileList
+
         anchors {
             bottom: parent.bottom
             top: topBar.bottom
@@ -18,7 +19,6 @@ Rectangle {
         width: parent.width * 0.97
         height: parent.height - topBar.height
         clip: true
-
 
         model: FolderListModel {
             id: folderModel
@@ -54,7 +54,6 @@ Rectangle {
                 color: "transparent"
                 radius: 10
 
-                // use MouseArea to make the rect clickable
                 MouseArea {
                     anchors.fill: parent
 
@@ -62,20 +61,77 @@ Rectangle {
 
                     onClicked: {
                         if (folderModel.isFolder(index)) {
-                            changeFolder(fileUrl, fileBaseName)
+                            changeFolder(fileUrl, fileBaseName);
+                            fileList.currentIndex = -1; // reset highlight to none
                         } else {
-                            filePressed(fileUrl)
+                            filePressed(fileUrl);
                         }
                     }
 
                     hoverEnabled: true
-                    onEntered: parent.color = "#80808080"
-                    onExited: parent.color = "transparent"
+                    onEntered: {
+                        // the if statement is to help prevent the highlight
+                        // and the hover from overlapping
+                        if (index !== fileList.currentIndex) {
+                            parent.color = "#80808080";
+                        }
+                    }
+                    onExited: {
+                        parent.color = "transparent";
+                    }
+                }
+                Keys.onPressed: (event) => {
+                    if (event.isAutoRepeat) {
+                        return;
+                    }
+
+                    switch (event.key) {
+                    case Qt.Key_Return:
+                        if (folderModel.isFolder(index)) {
+                            changeFolder(fileUrl, fileBaseName);
+                            // don't reset currentIndex
+                        } else {
+                            filePressed(fileUrl);
+                        }
+                        event.accepted = true;
+                        break;
+
+                    case Qt.Key_PageUp:
+                        fileList.currentIndex = 0;
+                        event.accepted = true;
+                        break;
+
+                    case Qt.Key_PageDown:
+                        fileList.currentIndex = fileList.count - 1
+                        event.accepted = true;
+                        break;
+                    }
                 }
             }
         }
 
+        highlight: Rectangle {
+            id: fileDelegateHighlight
+
+            color: "#80808080"
+            radius: 10
+        }
+
         focus: true
+        Shortcut {
+            autoRepeat: false
+            sequence: "f"
+            onActivated: {
+                // help reset focus on the ListView if the user
+                // pressed for example on a slider
+                fileList.focus = true;
+            }
+        }
+
+        Component.onCompleted: {
+            // this is to (visually) disable the highlight of the ListView by default
+            fileList.currentIndex = -1;
+        }
     }
 
     Rectangle {
@@ -133,27 +189,32 @@ Rectangle {
                 cursorShape: Qt.PointingHandCursor
 
                 onClicked: {
-                    // This way that I am using to determine the name of the folder
-                    // may not be portable because it relies on the fact that the
-                    // file separator is the '/' character which is not the case on windows
+                    // This way of determining the name of the folder assumes that the file
+                    // separator is the '/' character which is a reasonable assumption given:
+                    // https://doc.qt.io/qt-6/qml-qt-labs-folderlistmodel-folderlistmodel.html#path-separators
                     // todo: test it once I decide to care about windows
                     var parent = folderModel.parentFolder;
                     var subStrings = parent.toString().split('/');
                     changeFolder(parent, subStrings[subStrings.length-1]);
+                    fileList.currentIndex = -1; // reset highlight to none
+                }
+            }
+            Shortcut {
+                autoRepeat: false
+                sequences: [StandardKey.Back, "Ctrl+left"]
+                onActivated: {
+                    var parent = folderModel.parentFolder;
+                    var subStrings = parent.toString().split('/');
+                    changeFolder(parent, subStrings[subStrings.length-1]);
+                    // I explicitly kept the currentIndex where it as I think that's a better UX
                 }
             }
         }
     }
 
     function changeFolder(folderPath, baseName) {
-        folderModel.folder = folderPath
-        titleTxt.text = baseName
-        folderChanged(folderModel.folder)
-    }
-
-    function getInitFolder() {
-        var x = FileSystemHelper.findMusicDirectory();
-        console.log(x);
-        return x;
+        folderModel.folder = folderPath;
+        titleTxt.text = baseName;
+        folderChanged(folderModel.folder);
     }
 }

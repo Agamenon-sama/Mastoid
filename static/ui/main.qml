@@ -53,8 +53,6 @@ ApplicationWindow {
             right: parent.right
         }
 
-        color: "#000"
-
         MediaPlayer {
             id: player
 

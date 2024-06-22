@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.9
 import QtQuick.Controls
 import QtQuick.Layouts
 import QtMultimedia
@@ -7,7 +7,12 @@ Rectangle {
     id: root
     property bool muted: false
     property real volume: volumeSlider.value/100.0
+    property int seekTime: 5000
+    property real volumeModifier: 5.0
     property string themeColor: "#4c0080"
+    property string backgroundColor: "#000"
+
+    color: backgroundColor
 
     function play() {
         player.play()
@@ -99,17 +104,112 @@ Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-                Rectangle {
-                    id: playBtn
+            Rectangle {
+                id: playBtn
+
+                anchors {
+                     horizontalCenter: parent.horizontalCenter
+                     verticalCenter: parent.verticalCenter
+                }
+
+                Image {
+                    id: playIcon
+                    source: "qrc:/icons/play.svg"
+                    height: parent.height * 0.55
+                    fillMode: Image.PreserveAspectFit
 
                     anchors {
-                         horizontalCenter: parent.horizontalCenter
-                         verticalCenter: parent.verticalCenter
+                        verticalCenter: parent.verticalCenter
+                        horizontalCenter: parent.horizontalCenter
                     }
+                }
+
+                width: 50
+                height: 50
+                radius: 50
+                color: "transparent"
+                border.width: 2
+                border.color: "#888"
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    cursorShape: Qt.PointingHandCursor
+
+                    onClicked: {
+                        if (player.playbackState == MediaPlayer.PlayingState) {
+                            pause()
+                        } else {
+                            play()
+                        }
+                    }
+                }
+
+                Shortcut {
+                    autoRepeat: false
+                    sequences: ["space", "k"]
+                    onActivated: {
+                        if (player.playbackState == MediaPlayer.PlayingState) {
+                            pause()
+                        } else {
+                            play()
+                        }
+                    }
+                }
+                Shortcut {
+                    sequences: ["l", "right"]
+                    onActivated: {
+                        // todo: maybe test if I need to check if the player is on or not
+                        if (playbackSlider.value * player.duration + seekTime > player.duration) {
+                            player.setPosition(player.duration);
+                        }
+                        else {
+                            player.setPosition(playbackSlider.value * player.duration + seekTime)
+                        }
+                    }
+                }
+                Shortcut {
+                    sequences: ["j", "left"]
+                    onActivated: {
+                        // the if statement might be useless from what I test
+                        if (playbackSlider.value * player.duration - seekTime < 0) {
+                            player.setPosition(player.duration);
+                        }
+                        else {
+                            player.setPosition(playbackSlider.value * player.duration - seekTime)
+                        }
+                    }
+                }
+                // This Repeater is used to create 10 new shorcuts for each of the number
+                // keys that seek through the song at different percentages
+                // for example: Key_3 -> 30% of the song
+                Repeater {
+                    model: 10
+                    ShortcutComponent {
+                        required property int index // index should be from 0 to model - 1
+                        value: index
+                        Connections {
+                            function onPressed(key) {
+                                player.setPosition((key * 0.1) * player.duration);
+                            }
+                        }
+                    }
+                }
+            }
+            RowLayout {
+                id: volumeRow
+                anchors {
+                    right: parent.right
+                    rightMargin: 25
+                    verticalCenter: parent.verticalCenter
+                }
+
+                Rectangle {
+                    id: muteBtn
 
                     Image {
-                        id: playIcon
-                        source: "qrc:/icons/play.svg"
+                        id: muteIcon
+                        source: "qrc:/icons/speaker.svg"
                         height: parent.height * 0.55
                         fillMode: Image.PreserveAspectFit
 
@@ -118,10 +218,9 @@ Rectangle {
                             horizontalCenter: parent.horizontalCenter
                         }
                     }
-
-                    width: 50
-                    height: 50
-                    radius: 50
+                    width: 45
+                    height: 45
+                    radius: 45
                     color: "transparent"
                     border.width: 2
                     border.color: "#888"
@@ -132,94 +231,76 @@ Rectangle {
                         cursorShape: Qt.PointingHandCursor
 
                         onClicked: {
-                            if (player.playbackState == MediaPlayer.PlayingState) {
-                                pause()
+                            if (root.muted) {
+                                root.muted = false
+                                muteIcon.source = "qrc:/icons/speaker.svg"
                             } else {
-                                play()
+                                root.muted = true
+                                muteIcon.source = "qrc:/icons/mute.svg"
+                            }
+                        }
+                    }
+                    Shortcut {
+                        autoRepeat: false
+                        sequence: "m"
+                        onActivated: {
+                            if (root.muted) {
+                                root.muted = false
+                                muteIcon.source = "qrc:/icons/speaker.svg"
+                            } else {
+                                root.muted = true
+                                muteIcon.source = "qrc:/icons/mute.svg"
                             }
                         }
                     }
                 }
-                RowLayout {
-                    id: volumeRow
-                    anchors {
-                        right: parent.right
-                        rightMargin: 25
-                        verticalCenter: parent.verticalCenter
-                    }
 
-                    Rectangle {
-                        id: muteBtn
+                Slider {
+                    id: volumeSlider
 
-                        Image {
-                            id: muteIcon
-                            source: "qrc:/icons/speaker.svg"
-                            height: parent.height * 0.55
-                            fillMode: Image.PreserveAspectFit
+                    to: 100.0
+                    value: 100.0
 
-                            anchors {
-                                verticalCenter: parent.verticalCenter
-                                horizontalCenter: parent.horizontalCenter
-                            }
-                        }
-                        width: 45
-                        height: 45
-                        radius: 45
-                        color: "transparent"
-                        border.width: 2
-                        border.color: "#888"
+                    background: Rectangle {
+                        x: volumeSlider.leftPadding
+                        y: volumeSlider.topPadding + volumeSlider.availableHeight / 2 - height / 2
+                        implicitHeight: 4
+                        implicitWidth: 100
+                        height: implicitHeight
+                        width: volumeSlider.availableWidth
+                        radius: 2
+                        color: "#888"
 
-                        MouseArea {
-                            anchors.fill: parent
-
-                            cursorShape: Qt.PointingHandCursor
-
-                            onClicked: {
-                                if (root.muted) {
-                                    root.muted = false
-                                    muteIcon.source = "qrc:/icons/speaker.svg"
-                                } else {
-                                    root.muted = true
-                                    muteIcon.source = "qrc:/icons/mute.svg"
-                                }
-                            }
-                        }
-                    }
-
-                    Slider {
-                        id: volumeSlider
-
-                        to: 100.0
-                        value: 100.0
-
-                        background: Rectangle {
-                            x: volumeSlider.leftPadding
-                            y: volumeSlider.topPadding + volumeSlider.availableHeight / 2 - height / 2
-                            implicitHeight: 4
-                            implicitWidth: 100
-                            height: implicitHeight
-                            width: volumeSlider.availableWidth
+                        Rectangle {
+                            width: volumeSlider.visualPosition * parent.width
+                            height: parent.height
                             radius: 2
-                            color: "#888"
-
-                            Rectangle {
-                                width: volumeSlider.visualPosition * parent.width
-                                height: parent.height
-                                radius: 2
-                                color: themeColor
-                            }
-                        }
-
-                        handle: Rectangle {
-                            x: volumeSlider.leftPadding + volumeSlider.visualPosition * (volumeSlider.availableWidth - width)
-                            y: volumeSlider.topPadding + volumeSlider.availableHeight / 2 - height / 2
-                            implicitHeight: 14
-                            implicitWidth: 14
-                            radius: 8
                             color: themeColor
                         }
                     }
+
+                    handle: Rectangle {
+                        x: volumeSlider.leftPadding + volumeSlider.visualPosition * (volumeSlider.availableWidth - width)
+                        y: volumeSlider.topPadding + volumeSlider.availableHeight / 2 - height / 2
+                        implicitHeight: 14
+                        implicitWidth: 14
+                        radius: 8
+                        color: themeColor
+                    }
+                    Shortcut {
+                        sequence: "+"
+                        onActivated: {
+                            volumeSlider.value += volumeModifier;
+                        }
+                    }
+                    Shortcut {
+                        sequence: "-"
+                        onActivated: {
+                            volumeSlider.value -= volumeModifier;
+                        }
+                    }
                 }
+            }
         }
         Item {
             Layout.fillWidth: true
