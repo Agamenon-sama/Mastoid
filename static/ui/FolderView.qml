@@ -32,12 +32,34 @@ Rectangle {
             id: fileDelegate
 
             Rectangle {
+                Rectangle {
+                    height: parent.height * 0.8
+                    width: height
+                    anchors.verticalCenter: parent.verticalCenter
+                    x: parent.height * 0.1
+                    color: "transparent"
+
+                    Image {
+                        anchors.centerIn: parent
+                        height: parent.height * 0.7
+                        fillMode: Image.PreserveAspectFit
+
+                        source: {
+                            if (fileIsDir) {
+                                return "qrc:/icons/folder.svg"
+                            }
+
+                            return "qrc:/icons/music_note.svg"
+                        }
+                    }
+                }
+
                 Text {
                     anchors.verticalCenter: parent.verticalCenter
-                    x: 15
+                    x: 5 + parent.height
                     text: {
                         if (fileIsDir) {
-                            return fileName + "/"
+                            return fileName
                         }
 
                         return fileName

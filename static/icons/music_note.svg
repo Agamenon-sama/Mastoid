@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="256"
+   height="256"
+   viewBox="0 0 67.733332 67.733333"
+   version="1.1"
+   id="svg7067"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="music_note.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7069"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="1.6819304"
+     inkscape:cx="149.82784"
+     inkscape:cy="84.129521"
+     inkscape:window-width="1366"
+     inkscape:window-height="702"
+     inkscape:window-x="0"
+     inkscape:window-y="34"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs7064" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <ellipse
+       style="fill:#dddddd;fill-opacity:1;stroke:none;stroke-width:1.07075;stroke-linecap:round;stroke-linejoin:round"
+       id="path6078"
+       cx="8.8497772"
+       cy="50.267216"
+       rx="6.7801676"
+       ry="4.8046827"
+       transform="matrix(0.96669406,-0.25593476,0.26778619,0.96347836,0,0)" />
+    <rect
+       style="fill:#dddddd;fill-opacity:1;stroke:none;stroke-width:1.29571;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       id="rect6552"
+       width="1.7261184"
+       height="29.44183"
+       x="26.872168"
+       y="16.623163" />
+    <ellipse
+       style="fill:#dddddd;fill-opacity:1;stroke:none;stroke-width:1.07075;stroke-linecap:round;stroke-linejoin:round"
+       id="ellipse7221"
+       cx="33.072536"
+       cy="51.333546"
+       rx="6.7801676"
+       ry="4.8046827"
+       transform="matrix(0.96669406,-0.25593476,0.26778619,0.96347836,0,0)" />
+    <rect
+       style="fill:#dddddd;fill-opacity:1;stroke:none;stroke-width:1.29571;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       id="rect7223"
+       width="1.7261184"
+       height="29.44183"
+       x="50.573715"
+       y="11.451106" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#dddddd;stroke-width:1.79151;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="M 27.731398,16.612162 51.33212,11.462107"
+       id="path7998" />
+  </g>
+</svg>

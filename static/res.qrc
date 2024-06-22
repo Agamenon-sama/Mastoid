@@ -16,5 +16,7 @@
         <file>icons/Mastoid.png</file>
         <file>icons/back.svg</file>
         <file>ui/ShortcutComponent.qml</file>
+        <file>icons/folder.svg</file>
+        <file>icons/music_note.svg</file>
     </qresource>
 </RCC>
