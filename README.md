@@ -1,11 +1,15 @@
 # Mastoid
 
-Mastoid is a file based music player.
+<div align="center">
+<img width="400" src="Mastoid.svg" alt="Logo">
 
-There is no accounts, no subscriptions, no need for internet access, no complex music folders... Just organize your files in a decent hierarchical layout and enjoy.
+Mastoid is an open source file based music player.
 
-![Logo](Mastoid.svg)
+There is no accounts, no subscriptions, no need for internet access, no complex app specific abstractions... Just organize your files in a decent hierarchical layout and enjoy.
+
 ![screenshot](screenshot.png)
+
+</div>
 
 ## To do
 
@@ -16,8 +20,6 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
 - background image
     - make a better blur effect (I think I also want to add a grayscaling effect)
 - spectrum viewer ?
-
-Still not fully satisfied with the ui and the functional requirements but it's not terrible.
 
 ## Dependencies
 
