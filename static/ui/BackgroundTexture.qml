@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick.Effects
 
 Rectangle {
     id: root
@@ -50,6 +51,16 @@ Rectangle {
             vertexShader: "qrc:/shaders/background.vert.qsb"
             fragmentShader: "qrc:/shaders/background.frag.qsb"
         }
+    }
+    MultiEffect {
+        source: backImage
+        anchors.fill: backImage
+        autoPaddingEnabled: false
+
+        blurEnabled: true
+        blur: 1.0
+        blurMax: 50
+        blurMultiplier: 2
     }
 
     Connections {

@@ -17,8 +17,6 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
     - implement playlists
 - settings menu
     - I should start by thinking how to integrate it in the ui
-- background image
-    - make a better blur effect (I think I also want to add a grayscaling effect)
 - spectrum viewer ?
 
 ## Dependencies
