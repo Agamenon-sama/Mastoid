@@ -14,6 +14,6 @@ void main(void) {
     vec3 col = vec3(texture(source, texCoord));
     col = vec3(0.2126 * col.r + 0.7152 * col.g + 0.0722 * col.b);
 
-    // 40% overlay, 25% grayscale texture, 35% original texture
-    fragColor = 0.4f * vec4(0.3f, 0.3f, 0.35f, 1.f) + 0.25f * vec4(col, 1.f) + 0.35f * texture(source, texCoord);
+    // 20% overlay, 35% grayscale texture, 45% original texture
+    fragColor = 0.2f * vec4(0.3f, 0.3f, 0.35f, 1.f) + 0.35f * vec4(col, 1.f) + 0.45f * texture(source, texCoord);
 }
