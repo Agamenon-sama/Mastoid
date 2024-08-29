@@ -333,6 +333,25 @@ Rectangle {
         }
     }
 
+    Connections {
+        target: SystemTrayMenu
+        function onPlay() {
+            play();
+        }
+        function onPause() {
+            pause();
+        }
+        function onSoundToggle() {
+            if (root.muted) {
+                root.muted = false
+                muteIcon.source = "qrc:/icons/speaker.svg"
+            } else {
+                root.muted = true
+                muteIcon.source = "qrc:/icons/mute.svg"
+            }
+        }
+    }
+
     Component.onCompleted: {
         player.source = AppConfiguration.getStartupFile();
         play();

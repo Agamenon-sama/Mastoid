@@ -63,4 +63,11 @@ ApplicationWindow {
             }
         }
     }
+
+    Connections {
+        target: SystemTrayMenu
+        function onRestoreWindow() {
+            showNormal();
+        }
+    }
 }

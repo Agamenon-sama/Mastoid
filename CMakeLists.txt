@@ -6,12 +6,13 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.5 COMPONENTS Quick REQUIRED)
+find_package(Qt6 6.5 COMPONENTS Quick Gui Widgets REQUIRED)
 
 qt_add_executable(mastoid
     src/main.cpp
     src/FileSystemHelper.h src/FileSystemHelper.cpp
     src/AppConfiguration.h src/AppConfiguration.cpp
+    src/SystemTrayMenu.h src/SystemTrayMenu.cpp
     static/res.qrc
 )
 
@@ -32,4 +33,4 @@ set_target_properties(mastoid PROPERTIES
 target_compile_definitions(mastoid
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(mastoid
-    PRIVATE Qt6::Quick)
+    PRIVATE Qt6::Quick Qt6::Gui Qt6::Widgets)

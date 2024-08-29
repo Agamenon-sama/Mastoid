@@ -1,14 +1,15 @@
-#include <QGuiApplication>
+#include <QApplication>
 #include <QCommandLineParser>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
 #include "FileSystemHelper.h"
 #include "AppConfiguration.h"
+#include "SystemTrayMenu.h"
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     app.setApplicationName("Mastoid");
 
     QCommandLineParser args;
@@ -21,6 +22,7 @@ int main(int argc, char *argv[])
 
     FileSystemHelper helper;
     AppConfiguration config(args);
+    SystemTrayMenu systemTray(&app);
 
     QQmlApplicationEngine engine;
     const QUrl url(u"qrc:/ui/main.qml"_qs);
@@ -32,6 +34,7 @@ int main(int argc, char *argv[])
 
     engine.rootContext()->setContextProperty("FileSystemHelper", &helper);
     engine.rootContext()->setContextProperty("AppConfiguration", &config);
+    engine.rootContext()->setContextProperty("SystemTrayMenu", &systemTray);
 
     engine.load(url);
 
