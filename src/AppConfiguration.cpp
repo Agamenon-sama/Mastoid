@@ -8,7 +8,7 @@ AppConfiguration::AppConfiguration(const QCommandLineParser &parser)
     : QObject{nullptr}, _startupFileName("")
     , _width(1080), _height(600) {
 
-    _configFileName = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/mastoid/config";
+    _configFileName = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + "/Mastoid/mastoid.cfg";
     _baseDirectory = "file:" + QStandardPaths::writableLocation(QStandardPaths::MusicLocation);
 
     if (parser.value("f") != "") {
@@ -31,8 +31,7 @@ QUrl AppConfiguration::getStartupFile() const {
 void AppConfiguration::_parseConfig() {
     QFile file(_configFileName);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        // todo: properly log this
-        qDebug() << "failed to open config file: " << _configFileName;
+        qWarning() << "failed to open config file: " << _configFileName << ":\n" << file.errorString();
         return;
     }
 

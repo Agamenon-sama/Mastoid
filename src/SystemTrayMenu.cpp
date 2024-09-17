@@ -2,8 +2,7 @@
 
 SystemTrayMenu::SystemTrayMenu(QCoreApplication *app) {
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
-        // TODO: implement a better logging system
-        qDebug() << "System tray menus are not supported on this system";
+        qWarning() << "System tray menus are not supported on this system";
         return;
     }
 

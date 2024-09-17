@@ -61,6 +61,24 @@ ApplicationWindow {
                 muted: playerBlock.muted
                 volume: playerBlock.volume
             }
+
+            onErrorOccurred: (error, errorString) => {
+                switch (error) {
+                case 1:
+                    error = "A media resource couldn't be resolved.";
+                    break;
+                case 2:
+                    error = "Unsupported file format or corrupted file. Playback may still be possible, but with issues.";
+                    break;
+                case 4:
+                    error = "You don't have the permission to open this file";
+                    break;
+                default:
+                    error = "Unknown error";
+                    break;
+                }
+                console.error(error, errorString);
+            }
         }
     }
 

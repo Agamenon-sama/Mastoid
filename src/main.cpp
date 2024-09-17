@@ -2,13 +2,80 @@
 #include <QCommandLineParser>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QFile>
+#include <QStandardPaths>
 
 #include "FileSystemHelper.h"
 #include "AppConfiguration.h"
 #include "SystemTrayMenu.h"
 
+static QFile *logFile;
+
+static void logMessage(QtMsgType t, const QMessageLogContext &ctx, const QString &msg) {
+    QString type = "";
+    switch (t) {
+    case QtMsgType::QtFatalMsg:
+        type = "Fatal  ";
+        break;
+    case QtMsgType::QtCriticalMsg:
+        type = "Error  ";
+        break;
+    case QtMsgType::QtWarningMsg:
+        type = "Warning";
+        break;
+    case QtMsgType::QtInfoMsg:
+        type = "Info   ";
+        break;
+    case QtMsgType::QtDebugMsg:
+        type = "Debug  ";
+        break;
+    default:
+        break;
+    }
+
+    // create message
+    QString message = QString("[mastoid] -- %1 -- %2 -- %3\n").arg(
+        type, QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm::ss"), msg
+    );
+
+    // write to file
+    if (logFile) {
+        logFile->write(message.toStdString().c_str());
+        logFile->flush();
+    }
+
+    // write to console
+    if (t == QtMsgType::QtInfoMsg || t == QtMsgType::QtDebugMsg) {
+        static QTextStream stream(stdout);
+        stream << message;
+        stream.flush();
+    }
+    else {
+        static QTextStream stream(stderr);
+        stream << message;
+        stream.flush();
+    }
+}
+
 int main(int argc, char *argv[])
 {
+    // setup logging system
+    logFile = new QFile();
+    logFile->setFileName(QStandardPaths::writableLocation(QStandardPaths::CacheLocation) + "/Mastoid/mastoid.log");
+    logFile->open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Append);
+    if (logFile->isOpen()) {
+        qInstallMessageHandler(logMessage);
+        qInfo() << "Currently logging to " << logFile->fileName();
+    }
+    else {
+        auto filename = logFile->fileName();
+        delete logFile;
+        logFile = nullptr;
+        qInstallMessageHandler(logMessage); // use custom logger but without writing to file
+        qWarning() << "Can't open log file " << filename;
+    }
+
+
     QApplication app(argc, argv);
     app.setApplicationName("Mastoid");
 
@@ -38,6 +105,9 @@ int main(int argc, char *argv[])
 
     engine.load(url);
 
+    auto ret = app.exec();
 
-    return app.exec();
+    delete logFile;
+
+    return ret;
 }
