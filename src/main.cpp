@@ -8,6 +8,7 @@
 #include "FileSystemHelper.h"
 #include "AppConfiguration.h"
 #include "SystemTrayMenu.h"
+#include "MprisIntegration.h"
 
 static QFile *logFile;
 
@@ -35,7 +36,7 @@ static void logMessage(QtMsgType t, const QMessageLogContext &ctx, const QString
 
     // create message
     QString message = QString("[mastoid] -- %1 -- %2 -- %3\n").arg(
-        type, QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm::ss"), msg
+        type, QDateTime::currentDateTime().toString("dd-MM-yyyy hh:mm:ss"), msg
     );
 
     // write to file
@@ -90,6 +91,7 @@ int main(int argc, char *argv[])
     FileSystemHelper helper;
     AppConfiguration config(args);
     SystemTrayMenu systemTray(&app);
+    MprisIntegration mprisServer(&app);
 
     QQmlApplicationEngine engine;
     const QUrl url(u"qrc:/ui/main.qml"_qs);
