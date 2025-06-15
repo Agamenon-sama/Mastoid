@@ -352,6 +352,48 @@ Rectangle {
         }
     }
 
+    Connections {
+        target: Mpris
+        function onPlayRequest() {
+            play();
+        }
+
+        function onPauseRequest() {
+            pause();
+        }
+
+        function onPlayPauseRequest() {
+            if (player.playing) {
+                pause();
+            } else {
+                play();
+            }
+        }
+
+        function onStopRequest() {
+            player.stop();
+        }
+
+        function onNextRequest() {
+            // todo
+            console.log("implement next");
+        }
+
+        function onPreviousRequest() {
+            // todo
+            console.log("implement previous");
+        }
+
+        function onSeekRequest(x) {
+            player.position += x/1000; // x is in microseconds
+        }
+
+        function onOpenUriRequest(uri) {
+            player.source = uri;
+            play();
+        }
+    }
+
     Component.onCompleted: {
         player.source = AppConfiguration.getStartupFile();
         play();

@@ -40,6 +40,29 @@ void MprisIntegration::Pause() {
     emit pauseRequest();
 }
 
+void MprisIntegration::PlayPause() {
+    emit playPauseRequest();
+}
+
+void MprisIntegration::Stop() {
+    emit stopRequest();
+}
+
+void MprisIntegration::Next() {
+    emit nextRequest();
+}
+
+void MprisIntegration::Previous() {
+    emit previousRequest();
+}
+
+void MprisIntegration::Seek(const int x) {
+    emit seekRequest(x);
+}
+
+void MprisIntegration::OpenUri(QString uri) {
+    emit openUriRequest(uri);
+}
 
 void RootAdaptor::Raise() {
     static_cast<MprisIntegration*>(parent())->Raise();
@@ -55,4 +78,28 @@ void PlayerAdaptor::Play() {
 
 void PlayerAdaptor::Pause() {
     static_cast<MprisIntegration*>(parent())->Pause();
+}
+
+void PlayerAdaptor::PlayPause() {
+    static_cast<MprisIntegration*>(parent())->PlayPause();
+}
+
+void PlayerAdaptor::Stop() {
+    static_cast<MprisIntegration*>(parent())->Stop();
+}
+
+void PlayerAdaptor::Next() {
+    static_cast<MprisIntegration*>(parent())->Next();
+}
+
+void PlayerAdaptor::Previous() {
+    static_cast<MprisIntegration*>(parent())->Previous();
+}
+
+void PlayerAdaptor::Seek(const int x) {
+    static_cast<MprisIntegration*>(parent())->Seek(x);
+}
+
+void PlayerAdaptor::OpenUri(QString uri) {
+    static_cast<MprisIntegration*>(parent())->OpenUri(uri);
 }

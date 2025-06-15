@@ -44,22 +44,6 @@ private:
 class PlayerAdaptor : public QDBusAbstractAdaptor {
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.mpris.MediaPlayer2.Player")
-    Q_CLASSINFO("D-Bus Introspection", "<interface name=\"org.mpris.MediaPlayer2.Player\">"
-                                           "<property name=\"Position\" type=\"s\" access=\"\"/>"
-                                           "<property name=\"MinimumRate\" type=\"d\" access=\"\"/>"
-                                           "<property name=\"MaximumRate\" type=\"d\" access=\"\"/>"
-                                           "<property name=\"CanGoNext\" type=\"b\" access=\"\"/>"
-                                           "<property name=\"CanGoPrevious\" type=\"b\" access=\"\"/>"
-                                           "<property name=\"CanPlay\" type=\"b\" access=\"\"/>"
-                                           "<property name=\"CanPause\" type=\"b\" access=\"\"/>"
-                                           "<property name=\"CanSeek\" type=\"b\" access=\"\"/>"
-                                           "<property name=\"CanControl\" type=\"b\" access=\"\"/>"
-                                           "<method name=\"Next\"/>"
-                                           "<method name=\"Previous\"/>"
-                                           "<method name=\"PausePlay\"/>"
-                                           "<method name=\"Pause\"/>"
-                                           "<method name=\"Play\"/>"
-                                       "</interface>")
 
     Q_PROPERTY(QString Position MEMBER _position CONSTANT)
     Q_PROPERTY(double MinimumRate MEMBER _minimumRate CONSTANT)
@@ -74,14 +58,14 @@ public:
     PlayerAdaptor(QObject *parent): QDBusAbstractAdaptor(parent) {}
 
 public slots:
-    Q_SCRIPTABLE void Next() {}
-    Q_SCRIPTABLE void Previous() {}
+    Q_SCRIPTABLE void Next();
+    Q_SCRIPTABLE void Previous();
     Q_SCRIPTABLE void Pause();
-    Q_SCRIPTABLE void PausePlay() {}
-    Q_SCRIPTABLE void Stop() {}
+    Q_SCRIPTABLE void PlayPause();
+    Q_SCRIPTABLE void Stop();
     Q_SCRIPTABLE void Play();
-    Q_SCRIPTABLE void Seek(int x) {}
-    Q_SCRIPTABLE void OpenUri(QString uri) {}
+    Q_SCRIPTABLE void Seek(const int x);
+    Q_SCRIPTABLE void OpenUri(QString uri);
 
     Q_SCRIPTABLE void SetPosition(int trackId, int position) {}
     // void getPosition(int trackId, int position) {}
@@ -95,7 +79,7 @@ private:
     const bool _canGoPrevious = false;
     const bool _canPlay = true;
     const bool _canPause = true;
-    const bool _canSeek = false;
+    const bool _canSeek = true;
     const bool _canControl = false;
 };
 
@@ -109,8 +93,14 @@ public:
 signals:
     void playRequest();
     void pauseRequest();
+    void playPauseRequest();
+    void stopRequest();
+    void nextRequest();
+    void previousRequest();
+    void seekRequest(const int x);
+    void openUriRequest(QString uri);
 
-public Q_SLOTS:
+public slots:
     // root interface
     void Raise();
     void Quit();
@@ -118,6 +108,12 @@ public Q_SLOTS:
     // player interface
     void Play();
     void Pause();
+    void PlayPause();
+    void Stop();
+    void Next();
+    void Previous();
+    void Seek(const int x);
+    void OpenUri(QString uri);
 
 // signals:
 // private:

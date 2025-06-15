@@ -104,6 +104,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("FileSystemHelper", &helper);
     engine.rootContext()->setContextProperty("AppConfiguration", &config);
     engine.rootContext()->setContextProperty("SystemTrayMenu", &systemTray);
+    engine.rootContext()->setContextProperty("Mpris", &mprisServer);
 
     engine.load(url);
 
