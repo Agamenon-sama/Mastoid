@@ -5,12 +5,20 @@ import QtMultimedia
 
 Rectangle {
     id: root
+
+    enum EndPolicy {
+        Loop,
+        End,
+        PlayNext
+    }
+
     property bool muted: false
     property real volume: volumeSlider.value/100.0
     property int seekTime: 5000
     property real volumeModifier: 5.0
     property string themeColor: "#4c0080"
     property string backgroundColor: "#000"
+    property int endPolicy: PlayerControl.EndPolicy.PlayNext
 
     color: backgroundColor
 
@@ -375,13 +383,19 @@ Rectangle {
         }
 
         function onNextRequest() {
-            // todo
-            console.log("implement next");
+            var songPath = folderView.nextSong();
+            if (songPath) {
+                player.source = songPath;
+                play();
+            }
         }
 
         function onPreviousRequest() {
-            // todo
-            console.log("implement previous");
+            var songPath = folderView.previousSong();
+            if (songPath) {
+                player.source = songPath;
+                play();
+            }
         }
 
         function onSeekRequest(x) {

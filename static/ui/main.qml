@@ -62,6 +62,27 @@ ApplicationWindow {
                 volume: playerBlock.volume
             }
 
+            onPlayingChanged: () => {
+                if (player.position === player.duration) { // ended playing
+                    switch(playerBlock.endPolicy) {
+                    case PlayerControl.EndPolicy.Loop:
+                        player.position = 0;
+                        play();
+                        break;
+                    case PlayerControl.EndPolicy.PlayNext:
+                        var songPath = folderView.nextSong();
+                        if (songPath) {
+                            player.source = songPath;
+                            play();
+                        }
+                        break;
+                    case PlayerControl.EndPolicy.End:
+                    default:
+                        player.stop();
+                    }
+                }
+            }
+
             onErrorOccurred: (error, errorString) => {
                 switch (error) {
                 case 1:

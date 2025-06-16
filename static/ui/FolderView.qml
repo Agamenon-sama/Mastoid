@@ -3,6 +3,8 @@ import QtQuick.Dialogs
 import Qt.labs.folderlistmodel
 
 Rectangle {
+    id: folderView
+
     color: "transparent"
 
     signal folderChanged(newFolder: string)
@@ -87,6 +89,7 @@ Rectangle {
                             changeFolder(fileUrl, fileBaseName);
                             fileList.currentIndex = -1; // reset highlight to none
                         } else {
+                            fileList.currentIndex = folderModel.indexOf(fileUrl);
                             filePressed(fileUrl);
                         }
                     }
@@ -240,5 +243,21 @@ Rectangle {
         folderModel.folder = folderPath;
         titleTxt.text = baseName;
         folderChanged(folderModel.folder);
+    }
+
+    function nextSong() {
+        if (fileList.currentIndex + 1 <= fileList.count) {
+            fileList.currentIndex++;
+            return folderModel.get(fileList.currentIndex, "fileUrl");
+        }
+        return "";
+    }
+
+    function previousSong() {
+        if (fileList.currentIndex - 1 >= 0) {
+            fileList.currentIndex--;
+            return folderModel.get(fileList.currentIndex, "fileUrl");
+        }
+        return "";
     }
 }
