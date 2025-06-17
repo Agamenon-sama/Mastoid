@@ -21,7 +21,21 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
 
 ## Dependencies
 
-This application is built with Qt6 and QML.
+This application is built with Qt6, specifically:
+
+- QtCore
+- QtQuick
+- QtWidgets
+- QtDBus
+
+## Configuration
+
+An example config file is provided in this repo. This file must be placed in the OS specific configuration directory which should be the following:
+
+| OS | Configuration Directory |
+| --- | --- |
+| Linux | `~/.config/Mastoid` |
+| Windows | `C:/Users/<USER>/AppData/Local/Mastoid` |
 
 ## Build
 
