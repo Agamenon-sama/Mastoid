@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
 
     FileSystemHelper helper;
     AppConfiguration config(args);
-    SystemTrayMenu systemTray(&app);
+    SystemTrayMenu systemTray(&app, config);
     MprisIntegration mprisServer(&app);
 
     QQmlApplicationEngine engine;

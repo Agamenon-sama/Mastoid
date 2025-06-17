@@ -6,11 +6,13 @@
 #include <QMenu>
 #include <QAction>
 
+#include "AppConfiguration.h"
+
 class SystemTrayMenu : public QObject
 {
     Q_OBJECT
 public:
-    SystemTrayMenu(QCoreApplication *app = nullptr);
+    SystemTrayMenu(QCoreApplication *app, const AppConfiguration &config);
 
 private:
     QSystemTrayIcon *_systemTrayMenu;

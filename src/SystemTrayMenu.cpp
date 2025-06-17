@@ -1,6 +1,11 @@
 #include "SystemTrayMenu.h"
 
-SystemTrayMenu::SystemTrayMenu(QCoreApplication *app) {
+SystemTrayMenu::SystemTrayMenu(QCoreApplication *app, const AppConfiguration &config) {
+    if (!config.runInTray()) {
+        qDebug() << "Application is configured to NOT use sys tray";
+        return;
+    }
+
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
         qWarning() << "System tray menus are not supported on this system";
         return;
