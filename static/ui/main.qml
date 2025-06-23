@@ -14,6 +14,11 @@ ApplicationWindow {
 
     color: "#1e1e1e"
 
+    QtObject {
+        id: internal
+        property variant settingsMenu: null
+    }
+
     BackgroundTexture {
         id: backTexture
 
@@ -100,6 +105,16 @@ ApplicationWindow {
                 }
                 console.error(error, errorString);
             }
+        }
+    }
+
+    function openSettingsMenu() {
+        var settingsComp = Qt.createComponent("qrc:/ui/SettingsMenu.qml");
+        if (settingsComp.status === Component.Ready) {
+            internal.settingsMenu = settingsComp.createObject(parentWindow);
+        }
+        else if (settingsComp.status === Component.Error) {
+            console.error("Error creating the settings menu", settingsComp.errorString());
         }
     }
 

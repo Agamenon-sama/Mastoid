@@ -16,7 +16,6 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
 - music player
     - implement playlists
 - settings menu
-    - I should start by thinking how to integrate it in the ui
 - spectrum viewer ?
 
 ## Dependencies

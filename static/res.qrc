@@ -18,5 +18,6 @@
         <file>ui/ShortcutComponent.qml</file>
         <file>icons/folder.svg</file>
         <file>icons/music_note.svg</file>
+        <file>ui/SettingsMenu.qml</file>
     </qresource>
 </RCC>

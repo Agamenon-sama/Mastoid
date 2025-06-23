@@ -16,8 +16,8 @@ Rectangle {
     property real volume: volumeSlider.value/100.0
     property int seekTime: 5000
     property real volumeModifier: 5.0
-    property string themeColor: "#4c0080"
-    property string backgroundColor: "#000"
+    property color themeColor: "#4c0080"
+    property color backgroundColor: "#000"
     property int endPolicy: PlayerControl.EndPolicy.PlayNext
 
     color: backgroundColor
@@ -111,6 +111,41 @@ Rectangle {
         Item {
             Layout.fillWidth: true
             Layout.fillHeight: true
+
+            Rectangle {
+                id: settingsBtn
+
+                width: 45
+                height: 45
+                radius: 45
+                color: "transparent"
+                border.width: 2
+                border.color: "#888"
+
+                anchors {
+                    left: parent.left
+                    leftMargin: 25
+                    verticalCenter: parent.verticalCenter
+                }
+
+                Text {
+                    text: qsTr("S")
+                    color: "white"
+
+                    anchors {
+                        verticalCenter: parent.verticalCenter
+                        horizontalCenter: parent.horizontalCenter
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+
+                    cursorShape: Qt.PointingHandCursor
+
+                    onClicked: parentWindow.openSettingsMenu();
+                }
+            }
 
             Rectangle {
                 id: playBtn
@@ -410,6 +445,8 @@ Rectangle {
 
     Component.onCompleted: {
         player.source = AppConfiguration.getStartupFile();
-        play();
+        if (player.source) {
+            play();
+        }
     }
 }
