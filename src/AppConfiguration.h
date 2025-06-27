@@ -15,6 +15,7 @@ public:
     explicit AppConfiguration(const QCommandLineParser &parser);
 
     Q_INVOKABLE QUrl getStartupFile() const;
+    Q_INVOKABLE void save() const;
 
     int width() const;
     int height() const;

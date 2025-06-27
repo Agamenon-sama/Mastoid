@@ -28,6 +28,110 @@ QUrl AppConfiguration::getStartupFile() const {
     return QUrl("file:" + _startupFileName);
 }
 
+// This function can hide many bugs :(
+void AppConfiguration::save() const {
+    QFile file(_configFileName);
+    if (!file.exists()) {
+        QFile newFile(_configFileName);
+        if (!newFile.open(QIODevice::NewOnly)) {
+            qWarning() << "Config file " << _configFileName << "doesn't exist and failed to create a new one:\n" << file.errorString();
+            return;
+        }
+    }
+
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) { // this might be redundant
+        qWarning() << "failed to read config file " << _configFileName << ":\n" << file.errorString();
+        return;
+    }
+
+    QString tmpBuffer = "";
+    QHash<QString, bool> savedConfigOptions = {
+        {"window_width", false},
+        {"window_height", false},
+        {"base_directory", false},
+        {"run_in_system_tray", false},
+    };
+
+    qDebug() << "Started reading config file...";
+    QTextStream fileIn(&file);
+    while (!fileIn.atEnd()) {
+        auto line = fileIn.readLine();
+
+        if (!line.contains("=")) {
+            tmpBuffer += line + "\n";
+            continue;
+        }
+
+        auto key = line.section('=', 0, 0).trimmed();
+        auto rest = line.section('=', 1, 1);
+        rest = rest.contains("#") ? " " + rest.right(rest.length() - rest.indexOf('#')) : "";
+
+        // replace old values
+        if (key == "window_width") {
+            tmpBuffer += key + "=" + QString::number(_width) + rest + "\n";
+            savedConfigOptions["window_width"] = true;
+            continue;
+        }
+        else if (key == "window_height") {
+            tmpBuffer += key + "=" + QString::number(_height) + rest + "\n";
+            savedConfigOptions["window_height"] = true;
+            continue;
+        }
+        else if (key == "base_directory") {
+            tmpBuffer += key + "=" + _baseDirectory.toLocalFile() + rest + "\n";
+            savedConfigOptions["base_directory"] = true;
+            continue;
+        }
+        else if (key == "run_in_system_tray") {
+            tmpBuffer += key + "=" + (_runInTray ? "true" : "false") + rest + "\n";
+            savedConfigOptions["run_in_system_tray"] = true;
+            continue;
+        }
+        else {
+            tmpBuffer += line + "\n";
+            continue;
+        }
+    }
+
+    // if an option was set but the key doesn't exist in the original file
+    for (auto it = savedConfigOptions.cbegin(); it != savedConfigOptions.cend(); it++) {
+        if (!it.value()) {
+            if (it.key() == "window_width") {
+                tmpBuffer += it.key() + "=" + QString::number(_width) + "\n";
+                savedConfigOptions["window_width"] = true;
+                continue;
+            }
+            else if (it.key() == "window_height") {
+                tmpBuffer += it.key() + "=" + QString::number(_height) + "\n";
+                savedConfigOptions["window_height"] = true;
+                continue;
+            }
+            else if (it.key() == "base_directory") {
+                tmpBuffer += it.key() + "=" + _baseDirectory.toLocalFile() + "\n";
+                savedConfigOptions["base_directory"] = true;
+                continue;
+            }
+            else if (it.key() == "run_in_system_tray") {
+                tmpBuffer += it.key() + "=" + (_runInTray ? "true" : "false") + "\n";
+                savedConfigOptions["run_in_system_tray"] = true;
+                continue;
+            }
+        }
+    }
+
+    file.close();
+
+    if(file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text)) {
+        file.write(tmpBuffer.toUtf8());
+    }
+    else {
+        qWarning() << "failed to update config file " << _configFileName << ":\n" << file.errorString();
+        return;
+    }
+
+    qInfo() << "Updated configuration file successfully";
+}
+
 int AppConfiguration::width() const {
     return _width;
 }

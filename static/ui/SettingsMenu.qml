@@ -92,6 +92,8 @@ Item {
             }
 
             GridLayout {
+                id: controlsLayout
+
                 columns: 2
                 rowSpacing: 30
                 width: parent.width * 0.7
@@ -115,6 +117,8 @@ Item {
                     editable: true
 
                     Layout.alignment: Qt.AlignRight
+
+                    onValueModified: { AppConfiguration.width = value; }
                 }
 
                 // row 2
@@ -130,6 +134,8 @@ Item {
                     editable: true
 
                     Layout.alignment: Qt.AlignRight
+
+                    onValueModified: { AppConfiguration.height = value; }
                 }
 
                 // row 3
@@ -176,12 +182,12 @@ Item {
                         color: "transparent"
                         border {
                             width: 2
-                            color: btnMA.containsMouse ? themeColor : "#222"
+                            color: bdBtnMA.containsMouse ? themeColor : "#222"
                         }
                     }
 
                     MouseArea {
-                        id: btnMA
+                        id: bdBtnMA
                         anchors.fill: parent
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor
@@ -193,7 +199,9 @@ Item {
                 FolderDialog {
                     id: baseDirSelect
                     currentFolder: AppConfiguration.baseDirectory
-                    onAccepted: console.log("from folderDialog", currentFolder);
+                    onAccepted: {
+                        AppConfiguration.baseDirectory = currentFolder;
+                    }
                 }
 
                 // row 4
@@ -248,7 +256,77 @@ Item {
                     }
 
                     onClicked: {
-                        console.log("sys tray", checked);
+                        AppConfiguration.runInTray = checked;
+                    }
+                }
+            }
+            RowLayout {
+                id: finalizeBtnsLayout
+
+                anchors {
+                    right: controlsLayout.right
+                    bottom: parent.bottom
+                    bottomMargin: 40
+                }
+
+                Button {
+                    id: cancelBtn
+
+                    text: "Cancel"
+
+                    contentItem: Text {
+                        text: cancelBtn.text
+                        color: "#ddd"
+                        padding: 10
+                    }
+
+                    background: Rectangle {
+                        color: "transparent"
+                        border {
+                            width: 2
+                            color: cancelBtnMA.containsMouse ? themeColor : "#222"
+                        }
+                    }
+
+                    MouseArea {
+                        id: cancelBtnMA
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked: root.destroy();
+                    }
+                }
+
+                Button {
+                    id: saveBtn
+
+                    text: "Save"
+
+                    contentItem: Text {
+                        text: saveBtn.text
+                        color: "#ddd"
+                        padding: 10
+                    }
+
+                    background: Rectangle {
+                        color: "transparent"
+                        border {
+                            width: 2
+                            color: saveBtnMA.containsMouse ? themeColor : "#222"
+                        }
+                    }
+
+                    MouseArea {
+                        id: saveBtnMA
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+
+                        onClicked: {
+                            AppConfiguration.save();
+                            root.destroy();
+                        }
                     }
                 }
             }

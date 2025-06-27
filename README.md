@@ -15,7 +15,6 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
 
 - music player
     - implement playlists
-- settings menu
 - spectrum viewer ?
 
 ## Dependencies
@@ -29,7 +28,8 @@ This application is built with Qt6, specifically:
 
 ## Configuration
 
-An example config file is provided in this repo. This file must be placed in the OS specific configuration directory which should be the following:
+An example config file with detailed explanations is provided in this repo as well as a GUI editor that you can access through the button on the left of the player controls.
+The config file must be placed in the OS specific configuration directory which should be the following:
 
 | OS | Configuration Directory |
 | --- | --- |
