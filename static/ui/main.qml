@@ -67,16 +67,19 @@ ApplicationWindow {
                 volume: playerBlock.volume
             }
 
-            onPlayingChanged: () => {
-                if (player.position === player.duration) { // ended playing
+            onMediaStatusChanged: () => {
+                if (mediaStatus === MediaPlayer.EndOfMedia) { // ended playing
                     switch(playerBlock.endPolicy) {
                     case PlayerControl.EndPolicy.Loop:
+                        player.stop();
                         player.position = 0;
                         play();
                         break;
                     case PlayerControl.EndPolicy.PlayNext:
                         var songPath = folderView.nextSong();
                         if (songPath) {
+                            player.stop();
+                            player.position = 0;
                             player.source = songPath;
                             play();
                         }
