@@ -9,6 +9,8 @@ import Mastoid 1.0
 ApplicationWindow {
     id: parentWindow
 
+    property color themeColor: "#4c0080"
+
     width: AppConfiguration.width
     height: AppConfiguration.height
     visible: true

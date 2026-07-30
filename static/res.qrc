@@ -20,5 +20,7 @@
         <file>icons/music_note.svg</file>
         <file>ui/SettingsMenu.qml</file>
         <file>ui/Spectrum.qml</file>
+        <file>ui/qmldir</file>
+        <file>ui/Theme.qml</file>
     </qresource>
 </RCC>

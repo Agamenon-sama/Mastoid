@@ -16,9 +16,13 @@ Rectangle {
     property real volume: volumeSlider.value/100.0
     property int seekTime: 5000
     property real volumeModifier: 5.0
-    property color themeColor: "#4c0080"
+    property color themeColor: Theme.accentColor
     property color backgroundColor: "#000"
     property int endPolicy: PlayerControl.EndPolicy.PlayNext
+
+    Behavior on themeColor {
+        ColorAnimation { duration: 400; easing.type: Easing.OutCubic }
+    }
 
     color: backgroundColor
 

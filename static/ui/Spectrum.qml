@@ -1,6 +1,14 @@
 import QtQuick 2.0
 
 Item {
+    id: root
+
+    property color color: Theme.accentColor
+
+    Behavior on color {
+        ColorAnimation { duration: 400; easing.type: Easing.OutCubic }
+    }
+
     Canvas {
         id: spectrumCanvas
 
@@ -27,7 +35,7 @@ Item {
         onPaint: {
                 var ctx = getContext("2d");
                 ctx.clearRect(0, 0, width, height);
-                ctx.fillStyle = "#882d9b"
+                ctx.fillStyle = root.color // "#882d9b"
 
                 var left = spectrumAnalyzer.leftMagnitudes;
                 var right = spectrumAnalyzer.rightMagnitudes;
