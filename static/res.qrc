@@ -19,5 +19,6 @@
         <file>icons/folder.svg</file>
         <file>icons/music_note.svg</file>
         <file>ui/SettingsMenu.qml</file>
+        <file>ui/Spectrum.qml</file>
     </qresource>
 </RCC>

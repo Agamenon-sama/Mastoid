@@ -6,7 +6,10 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
 find_package(Qt6 6.8 COMPONENTS Quick Gui Widgets DBus Multimedia REQUIRED)
+find_package(FFTW REQUIRED COMPONENTS FLOAT_LIB FLOAT_THREADS_LIB)
 
 # set(PROJECTS_SRCS
 #     src/main.cpp
@@ -42,7 +45,11 @@ set_target_properties(mastoid PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
+target_include_directories(mastoid PRIVATE ${FFTW_INCLUDE_DIRS})
+
 target_compile_definitions(mastoid
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(mastoid
-    PRIVATE Qt6::Quick Qt6::Gui Qt6::Widgets Qt6::DBus Qt6::Multimedia)
+    PRIVATE Qt6::Quick Qt6::Gui Qt6::Widgets Qt6::DBus Qt6::Multimedia
+)
+target_link_libraries(mastoid PRIVATE ${FFTW_LIBRARIES})

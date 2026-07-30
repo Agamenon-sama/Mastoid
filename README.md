@@ -13,9 +13,8 @@ There is no accounts, no subscriptions, no need for internet access, no complex 
 
 ## To do
 
-- music player
-    - implement playlists
-- spectrum viewer ?
+- Settings menu: needs more work
+- Spectrum viewer: finally here but needs more work on the visuals
 
 ## Dependencies
 
@@ -25,6 +24,8 @@ This application is built with Qt6, specifically:
 - QtQuick
 - QtWidgets
 - QtDBus
+
+You will also need the FFTW library, specifically the float and float threaded components.
 
 ## Configuration
 

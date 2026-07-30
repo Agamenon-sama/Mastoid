@@ -28,6 +28,15 @@ ApplicationWindow {
         height: parent.height;
     }
 
+    Spectrum {
+        anchors {
+            top: parent.top
+            bottom: playerBlock.top
+            right: parent.right
+            left: parent.left
+        }
+    }
+
     FolderView {
         id: folderView
 
@@ -115,34 +124,6 @@ ApplicationWindow {
                 }
                 console.error(error, errorString);
             }
-        }
-    }
-
-    Canvas {
-        id: spectrumCanvas
-
-        height: parent.height * 0.1
-        anchors {
-            bottom: playerBlock.top
-            left: parent.left
-            right: parent.right
-        }
-
-        onPaint: {
-            var ctx = getContext("2d");
-            ctx.clearRect(0, 0, width, height);
-            ctx.fillStyle = "#882d9b"
-            var mags = spectrumAnalyzer.magnitudes;
-            var barWidth = width / mags.length;
-            for (var i = 0; i < mags.length; i++) {
-                var h = mags[i] * height;
-                ctx.fillRect(i * barWidth, height - h, barWidth - 1, h);
-            }
-        }
-
-        Connections {
-            target: spectrumAnalyzer
-            function onMagnitudesChanged() { spectrumCanvas.requestPaint() }
         }
     }
 
