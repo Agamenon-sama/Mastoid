@@ -9,6 +9,7 @@
 #include "AppConfiguration.h"
 #include "SystemTrayMenu.h"
 #include "MprisIntegration.h"
+#include "SpectrumAnalyzer.h"
 
 static QFile *logFile;
 
@@ -105,6 +106,8 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("AppConfiguration", &config);
     engine.rootContext()->setContextProperty("SystemTrayMenu", &systemTray);
     engine.rootContext()->setContextProperty("Mpris", &mprisServer);
+
+    qmlRegisterType<SpectrumAnalyzer>("Mastoid", 1, 0, "SpectrumAnalyzer");
 
     engine.load(url);
 

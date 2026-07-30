@@ -6,7 +6,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 6.5 COMPONENTS Quick Gui Widgets DBus REQUIRED)
+find_package(Qt6 6.8 COMPONENTS Quick Gui Widgets DBus Multimedia REQUIRED)
 
 # set(PROJECTS_SRCS
 #     src/main.cpp
@@ -23,6 +23,8 @@ qt_add_executable(mastoid
     src/AppConfiguration.h src/AppConfiguration.cpp
     src/SystemTrayMenu.h src/SystemTrayMenu.cpp
     src/MprisIntegration.h src/MprisIntegration.cpp
+    src/SpectrumAnalyzer.h src/SpectrumAnalyzer.cpp
+    src/RingBuffer.h src/RingBuffer.cpp
     static/res.qrc
 )
 
@@ -43,4 +45,4 @@ set_target_properties(mastoid PROPERTIES
 target_compile_definitions(mastoid
     PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(mastoid
-    PRIVATE Qt6::Quick Qt6::Gui Qt6::Widgets Qt6::DBus)
+    PRIVATE Qt6::Quick Qt6::Gui Qt6::Widgets Qt6::DBus Qt6::Multimedia)

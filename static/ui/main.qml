@@ -4,6 +4,8 @@ import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtMultimedia
 
+import Mastoid 1.0
+
 ApplicationWindow {
     id: parentWindow
 
@@ -58,6 +60,10 @@ ApplicationWindow {
             right: parent.right
         }
 
+        SpectrumAnalyzer {
+            id: spectrumAnalyzer
+        }
+
         MediaPlayer {
             id: player
 
@@ -66,6 +72,7 @@ ApplicationWindow {
                 muted: playerBlock.muted
                 volume: playerBlock.volume
             }
+            audioBufferOutput: spectrumAnalyzer.bufferOutput
 
             onMediaStatusChanged: () => {
                 if (mediaStatus === MediaPlayer.EndOfMedia) { // ended playing
@@ -108,6 +115,34 @@ ApplicationWindow {
                 }
                 console.error(error, errorString);
             }
+        }
+    }
+
+    Canvas {
+        id: spectrumCanvas
+
+        height: parent.height * 0.1
+        anchors {
+            bottom: playerBlock.top
+            left: parent.left
+            right: parent.right
+        }
+
+        onPaint: {
+            var ctx = getContext("2d");
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = "#882d9b"
+            var mags = spectrumAnalyzer.magnitudes;
+            var barWidth = width / mags.length;
+            for (var i = 0; i < mags.length; i++) {
+                var h = mags[i] * height;
+                ctx.fillRect(i * barWidth, height - h, barWidth - 1, h);
+            }
+        }
+
+        Connections {
+            target: spectrumAnalyzer
+            function onMagnitudesChanged() { spectrumCanvas.requestPaint() }
         }
     }
 
