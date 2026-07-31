@@ -4,10 +4,6 @@
         <file>ui/main.qml</file>
         <file>ui/PlayerControl.qml</file>
         <file>ui/CoverArt.qml</file>
-        <file>shaders/background.frag</file>
-        <file>shaders/background.frag.qsb</file>
-        <file>shaders/background.vert</file>
-        <file>shaders/background.vert.qsb</file>
         <file>ui/BackgroundTexture.qml</file>
         <file>icons/mute.svg</file>
         <file>icons/pause.svg</file>

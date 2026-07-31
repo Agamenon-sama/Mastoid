@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(Mastoid VERSION 0.3 LANGUAGES CXX)
+project(Mastoid VERSION 0.4 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-find_package(Qt6 6.8 COMPONENTS Quick Gui Widgets DBus Multimedia REQUIRED)
+find_package(Qt6 6.8 COMPONENTS Quick Gui Widgets DBus Multimedia ShaderTools REQUIRED)
 find_package(FFTW REQUIRED COMPONENTS FLOAT_LIB FLOAT_THREADS_LIB)
 
 # set(PROJECTS_SRCS
@@ -29,6 +29,24 @@ qt_add_executable(mastoid
     src/SpectrumAnalyzer.h src/SpectrumAnalyzer.cpp
     src/RingBuffer.h src/RingBuffer.cpp
     static/res.qrc
+)
+
+qt_add_shaders(mastoid "mastoid_shaders"
+    PREFIX
+        "/shaders"
+    FILES
+        static/shaders/background.vert
+        static/shaders/background.frag
+    OUTPUTS
+            "background.vert.qsb"
+            "background.frag.qsb"
+    BATCHABLE
+    GLSL
+        "100es,120,150"
+    HLSL
+        "50"
+    MSL
+        "12"
 )
 
 #qt_add_qml_module(mastoid
