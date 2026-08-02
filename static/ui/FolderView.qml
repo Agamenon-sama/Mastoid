@@ -248,6 +248,11 @@ Rectangle {
     function nextSong() {
         if (fileList.currentIndex + 1 <= fileList.count) {
             fileList.currentIndex++;
+            if (folderModel.isFolder(fileList.currentIndex)) {
+                fileList.currentIndex--;
+                return "";
+            }
+
             return folderModel.get(fileList.currentIndex, "fileUrl");
         }
         return "";
@@ -256,6 +261,11 @@ Rectangle {
     function previousSong() {
         if (fileList.currentIndex - 1 >= 0) {
             fileList.currentIndex--;
+            if (folderModel.isFolder(fileList.currentIndex)) {
+                fileList.currentIndex++;
+                return "";
+            }
+
             return folderModel.get(fileList.currentIndex, "fileUrl");
         }
         return "";

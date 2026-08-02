@@ -27,6 +27,8 @@ Rectangle {
     color: backgroundColor
 
     function play() {
+        // attempt to fix the stutter when playing after a pause in some Qt Multimedia backends
+        player.setPosition(player.position > 50 ? player.position - 50 : 0);
         player.play()
         playIcon.source = "qrc:/icons/pause.svg"
     }
@@ -221,7 +223,7 @@ Rectangle {
                     onActivated: {
                         // the if statement might be useless from what I test
                         if (playbackSlider.value * player.duration - seekTime < 0) {
-                            player.setPosition(player.duration);
+                            player.setPosition(0);
                         }
                         else {
                             player.setPosition(playbackSlider.value * player.duration - seekTime)
@@ -365,7 +367,13 @@ Rectangle {
 
                 color: "#ddd"
 
-                text: ""
+                text: {
+                    const path = decodeURIComponent(player.source.toString());
+                    if (path == "file:")
+                        return "";
+
+                    return path.slice(path.lastIndexOf("/")+1);
+                }
             }
         }
     }
@@ -376,7 +384,6 @@ Rectangle {
         function onFilePressed(name) {
             player.source = name;
             play();
-            currentSongName.text = name.slice(name.lastIndexOf("/")+1);
         }
     }
 
