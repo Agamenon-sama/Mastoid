@@ -2,11 +2,13 @@
 #define SPECTRUMANALYZER_H
 
 #include <vector>
+#include <deque>
 
 #include <QObject>
 #include <QAudioBuffer>
 #include <QAudioBufferOutput>
 #include <QVariantList>
+#include <QElapsedTimer>
 
 #include <fftw3.h>
 
@@ -17,6 +19,9 @@ class SpectrumAnalyzer : public QObject {
     Q_PROPERTY(QAudioBufferOutput* bufferOutput READ bufferOutput CONSTANT)
     Q_PROPERTY(QVariantList leftMagnitudes READ leftMagnitudes NOTIFY magnitudesChanged)
     Q_PROPERTY(QVariantList rightMagnitudes READ rightMagnitudes NOTIFY magnitudesChanged)
+    Q_PROPERTY(qreal bass READ bass NOTIFY magnitudesChanged)
+    Q_PROPERTY(qreal treble READ treble NOTIFY magnitudesChanged)
+    Q_PROPERTY(qreal beat READ beat NOTIFY magnitudesChanged)
 
 public:
     explicit SpectrumAnalyzer(QObject *parent = nullptr);
@@ -25,6 +30,9 @@ public:
     QAudioBufferOutput *bufferOutput() const { return _bufferOutput; }
     QVariantList leftMagnitudes() const { return _leftMagnitudes; }
     QVariantList rightMagnitudes() const { return _rightMagnitudes; }
+    qreal bass() const { return _bassLevel; }
+    qreal treble() const { return _trebleLevel; }
+    qreal beat() const { return _beatPulse; }
 
 signals:
     void magnitudesChanged();
@@ -37,6 +45,9 @@ private:
     QAudioBufferOutput *_bufferOutput;
     QVariantList _leftMagnitudes;
     QVariantList _rightMagnitudes;
+    float _bassLevel = 0.f;
+    float _trebleLevel = 0.f;
+    float _beatPulse = 0.f;
 
     RingBuffer _leftBuffer;
     RingBuffer _rightBuffer;
@@ -55,12 +66,23 @@ private:
     int _sampleRate = 0; // updated from the first buffer received
     int _numBars = 256;
     std::vector<int> _bandEdges; // precomputed bin index boundaries, size _numBars+1
+    int _bassBinStart = 0, _bassBinEnd = 0;
+    int _trebleBinStart = 0, _trebleBinEnd = 0;
 
     float _runningPeak = 1e-6f;
     static constexpr float kPeakDecay = 0.97f;
+    static constexpr float kBeatDecay = 0.85f;
+    static constexpr qint64 kBeatDebounceMs = 150;
+
+    std::deque<float> _bassEnergyHistory;
+    QElapsedTimer _beatTimer;  // start() in constructor
+    qint64 _lastBeatMs = 0;
+    float _bassRunningPeak = 0.f;
+    float _trebleRunningPeak = 0.f;
 
     void _rebuildBandEdges();
     QVariantList _computeBandsForChannel(const fftwf_complex *fftOut);
+    void _updateBassTrebleAndBeat();
 };
 
 #endif // SPECTRUMANALYZER_H

@@ -29,6 +29,8 @@ SpectrumAnalyzer::SpectrumAnalyzer(QObject *parent)
     timer->setInterval(static_cast<int>(1000.f / _fftRate));
     connect(timer, &QTimer::timeout, this, &SpectrumAnalyzer::computeSpectrum);
     timer->start();
+
+    _beatTimer.start();
 }
 
 SpectrumAnalyzer::~SpectrumAnalyzer() {
@@ -93,6 +95,17 @@ void extractChannels(const QAudioBuffer &buffer, std::vector<float> &left, std::
     }
 }
 
+float bandPower(const fftwf_complex *fftOut, int startBin, int endBin, float norm) {
+    if (endBin <= startBin) return 0.f;
+    float sum = 0.f;
+    for (int i = startBin; i < endBin; ++i) {
+        const float re = fftOut[i][0] * norm;
+        const float im = fftOut[i][1] * norm;
+        sum += re * re + im * im;
+    }
+    return sum / float(endBin - startBin);
+}
+
 void SpectrumAnalyzer::processBuffer(const QAudioBuffer &buffer) {
     if (!buffer.isValid() || buffer.frameCount() == 0)
         return;
@@ -101,7 +114,6 @@ void SpectrumAnalyzer::processBuffer(const QAudioBuffer &buffer) {
         _sampleRate = buffer.format().sampleRate();
         _rebuildBandEdges();
     }
-    // qDebug() << buffer.format();
 
     std::vector<float> left, right;
 
@@ -130,10 +142,9 @@ void SpectrumAnalyzer::processBuffer(const QAudioBuffer &buffer) {
 }
 
 void SpectrumAnalyzer::computeSpectrum() {
-    if (!_leftBuffer.hasEnoughSamples(2048)) {
+    if (!_leftBuffer.hasEnoughSamples(kFftSize)) {
         return;
     }
-    // qDebug() << "computing spectrum...";
 
 
     std::vector<float> left(kFftSize), right(kFftSize);
@@ -147,6 +158,8 @@ void SpectrumAnalyzer::computeSpectrum() {
 
     fftwf_execute_dft_r2c(_fftPlan, _fftInLeft, _fftOutLeft);
     fftwf_execute_dft_r2c(_fftPlan, _fftInRight, _fftOutRight);
+
+    _updateBassTrebleAndBeat();
 
     QVariantList leftRaw  = _computeBandsForChannel(_fftOutLeft);
     QVariantList rightRaw = _computeBandsForChannel(_fftOutRight);
@@ -171,43 +184,22 @@ void SpectrumAnalyzer::computeSpectrum() {
     _leftMagnitudes  = normalize(leftRaw);
     _rightMagnitudes = normalize(rightRaw);
 
-    // QVariantList mags;
-    // mags.reserve(_numBars);
-
-    // const float norm = 2.f / kFftSize;
-
-    // for (int b = 0; b < _numBars; ++b) {
-    //     const int startBin = _bandEdges[b];
-    //     const int endBin = _bandEdges[b + 1]; // exclusive
-    //     float maxMag = 0.f;
-
-    //     for (int i = startBin; i < endBin; i++) {
-    //         const float re = _fftOut[i][0];
-    //         const float im = _fftOut[i][1];
-    //         const float mag = std::sqrt(re * re + im * im) * norm;
-    //         maxMag = std::max(maxMag, mag);
-    //     }
-
-    //     // logarithmic
-    //     const float db = 20.f * std::log10(std::max(maxMag, 1e-9f));
-    //     // remap [-60, 0] db to [0, 1], clamp and store
-    //     mags.append(std::clamp((db + 60.f) / 60.f, 0.f, 1.f));
-
-    //     // linear
-    //     // It's not really linear since I'm applying a gamma correction.
-    //     // Also, I pulled the 5.f and 0.35f from my ass
-    //     // const float val = std::clamp(maxMag * 5.f, 0.f, 1.f);
-    //     // mags.append(std::pow(val, 0.45f));
-    // }
-
-    // _magnitudes = mags;
-
     emit magnitudesChanged();
 }
 
 void SpectrumAnalyzer::_rebuildBandEdges() {
-    const float minFreq = 30.f; // below this is mostly inaudible
-    const float maxFreq = _sampleRate / 2.f; // Nyquist-Shannon
+    const float minFreq =       20.f;
+    const float maxFreq =       _sampleRate / 2.f; // Nyquist-Shannon
+    const float bassMinFreq =   20.f;
+    const float bassMaxFreq =   150.f;
+    const float trebleMinFreq = 4'000.f;
+    [[assume(12'000.f <= maxFreq)]]
+    const float trebleMaxFreq = 12'000.f <= maxFreq ? 12'000.f : maxFreq;
+
+    auto freqToBin = [this](float freq) {
+        int bin = static_cast<int>(freq * kFftSize / _sampleRate);
+        return std::clamp(bin, 0, int(kSpectrumBins) - 1);
+    };
 
     _bandEdges.resize(_numBars + 1);
 
@@ -215,8 +207,9 @@ void SpectrumAnalyzer::_rebuildBandEdges() {
     for (int i = 0; i <= _numBars; i++) {
         const float t = float(i) / _numBars;
         const float freq = minFreq * std::pow(maxFreq / minFreq, t);
-        int bin = static_cast<int>(freq * kFftSize / _sampleRate);
-        _bandEdges[i] = std::clamp(bin, 0, int(kSpectrumBins) - 1);
+        // int bin = static_cast<int>(freq * kFftSize / _sampleRate);
+        // _bandEdges[i] = std::clamp(bin, 0, int(kSpectrumBins) - 1);
+        _bandEdges[i] = freqToBin(freq);
     }
 
     for (int i = 1; i <= _numBars; i++) {
@@ -224,6 +217,11 @@ void SpectrumAnalyzer::_rebuildBandEdges() {
             _bandEdges[i] = _bandEdges[i - 1] + 1;
         }
     }
+
+    _bassBinStart   = freqToBin(bassMinFreq);
+    _bassBinEnd     = std::max(_bassBinStart + 1, freqToBin(bassMaxFreq));
+    _trebleBinStart = freqToBin(trebleMinFreq);
+    _trebleBinEnd   = std::max(_trebleBinStart + 1, freqToBin(std::min(trebleMaxFreq, maxFreq)));
 }
 
 QVariantList SpectrumAnalyzer::_computeBandsForChannel(const fftwf_complex *fftOut) {
@@ -244,4 +242,51 @@ QVariantList SpectrumAnalyzer::_computeBandsForChannel(const fftwf_complex *fftO
         bars.append(maxMag); // still raw linear here
     }
     return bars;
+}
+
+void SpectrumAnalyzer::_updateBassTrebleAndBeat() {
+    const float norm = 2.f / kFftSize;
+
+    const float bassInstant = 0.5f * (
+        bandPower(_fftOutLeft,  _bassBinStart, _bassBinEnd, norm) +
+        bandPower(_fftOutRight, _bassBinStart, _bassBinEnd, norm)
+    );
+
+    const float trebleInstant = 0.5f * (
+        bandPower(_fftOutLeft,  _trebleBinStart, _trebleBinEnd, norm) +
+        bandPower(_fftOutRight, _trebleBinStart, _trebleBinEnd, norm)
+    );
+
+    // treble
+    _trebleRunningPeak = std::max(trebleInstant, _trebleRunningPeak * kPeakDecay);
+    const float trebleTarget = _trebleRunningPeak > 0.f ? std::clamp(trebleInstant / _trebleRunningPeak, 0.f, 1.f) : 0.f;
+    const float trebleCoef = trebleTarget > _trebleLevel ? 0.6f : 0.15f;
+    _trebleLevel += (trebleTarget - _trebleLevel) * trebleCoef;
+
+    // bass
+    _bassRunningPeak = std::max(bassInstant, _bassRunningPeak * kPeakDecay);
+    const float bassTarget = _bassRunningPeak > 0.f ? std::clamp(bassInstant / _bassRunningPeak, 0.f, 1.f) : 0.f;
+    const float bassCoef = bassTarget > _bassLevel ? 0.7f : 0.1f;
+    _bassLevel += (bassTarget - _bassLevel) * bassCoef;
+
+    // beat
+    _bassEnergyHistory.push_back(bassInstant);
+    if (_bassEnergyHistory.size() > static_cast<size_t>(_fftRate))
+        _bassEnergyHistory.pop_front();
+
+    if (_bassEnergyHistory.size() == static_cast<size_t>(_fftRate)) {
+        const float avg = std::accumulate(_bassEnergyHistory.begin(), _bassEnergyHistory.end(), 0.f) / static_cast<int>(_fftRate);
+        float variance = 0.f;
+        for (float e : _bassEnergyHistory) variance += (e - avg) * (e - avg);
+        variance /= static_cast<int>(_fftRate);
+
+        const float threshold = std::clamp(-0.0025714f * variance + 1.5142857f, 1.1f, 2.5f);
+        const qint64 nowMs = _beatTimer.elapsed();
+        if (avg > 1e-6f && bassInstant > avg * threshold &&
+            (nowMs - _lastBeatMs) > kBeatDebounceMs) {
+            _beatPulse = 1.f;
+            _lastBeatMs = nowMs;
+        }
+    }
+    _beatPulse *= kBeatDecay;
 }

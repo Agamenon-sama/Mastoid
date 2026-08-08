@@ -44,6 +44,10 @@ Rectangle {
 
         ShaderEffect {
             property variant source: backImage
+            property real u_bass: spectrumAnalyzer.bass
+            property real u_treble: spectrumAnalyzer.treble
+            property real u_beat: spectrumAnalyzer.beat
+            property real u_time: player.position
 
             width: backImage.width
             height: backImage.height
@@ -59,7 +63,7 @@ Rectangle {
 
         blurEnabled: true
         blur: 1.0
-        blurMax: 50
+        blurMax: 42
         blurMultiplier: 2
     }
 
