@@ -1,17 +1,10 @@
 #include "SystemTrayMenu.h"
 
-SystemTrayMenu::SystemTrayMenu(QCoreApplication *app, const AppConfiguration &config) {
-    if (!config.runInTray()) {
-        qDebug() << "Application is configured to NOT use sys tray";
-        return;
-    }
-
+SystemTrayMenu::SystemTrayMenu(QCoreApplication *app, bool runInTray) : _app(app) {
     if (!QSystemTrayIcon::isSystemTrayAvailable()) {
         qWarning() << "System tray menus are not supported on this system";
         return;
     }
-
-    QApplication::setQuitOnLastWindowClosed(false);
 
     _playAction = new QAction("Play"); _playAction->setIcon(QIcon(":/icons/play.svg").pixmap(32));
     _pauseAction = new QAction("Pause"); _pauseAction->setIcon(QIcon(":/icons/pause.svg").pixmap(32));
@@ -27,17 +20,44 @@ SystemTrayMenu::SystemTrayMenu(QCoreApplication *app, const AppConfiguration &co
     _menu->addAction(_restoreAction);
     _menu->addAction(_quitAction);
 
-    // QIcon icon(dataLocation + "/Mastoid.png");
-    _systemTrayMenu = new QSystemTrayIcon(app);
-    // _systemTrayMenu->setIcon(QIcon((dataLocation + "/Mastoid.png")).pixmap(32));
-    _systemTrayMenu->setIcon(QIcon(":/icons/Mastoid.png").pixmap(32));
-    _systemTrayMenu->setContextMenu(_menu);
-
-    QObject::connect(_playAction, &QAction::triggered, this, [this] { emit play(); });
-    QObject::connect(_pauseAction, &QAction::triggered, this, [this] { emit pause(); });
-    QObject::connect(_soundAction, &QAction::triggered, this, [this] { emit soundToggle(); });
-    QObject::connect(_restoreAction, &QAction::triggered, this, [this] { emit restoreWindow(); });
+    QObject::connect(_playAction, &QAction::triggered, this, [this] { if (_systemTrayMenu) emit play(); });
+    QObject::connect(_pauseAction, &QAction::triggered, this, [this] { if (_systemTrayMenu) emit pause(); });
+    QObject::connect(_soundAction, &QAction::triggered, this, [this] { if (_systemTrayMenu) emit soundToggle(); });
+    QObject::connect(_restoreAction, &QAction::triggered, this, [this] { if (_systemTrayMenu) emit restoreWindow(); });
     QObject::connect(_quitAction, &QAction::triggered, app, &QCoreApplication::quit);
 
+    if (!runInTray) {
+        qDebug() << "Application is configured to NOT use sys tray";
+        return;
+    }
+
+    QApplication::setQuitOnLastWindowClosed(false);
+
+    _systemTrayMenu = new QSystemTrayIcon(_app);
+    _systemTrayMenu->setIcon(QIcon(":/icons/Mastoid.png").pixmap(32));
+    _systemTrayMenu->setContextMenu(_menu);
     _systemTrayMenu->show();
+}
+
+void SystemTrayMenu::enable() {
+    if (_systemTrayMenu) return;
+
+    if (!QSystemTrayIcon::isSystemTrayAvailable()) return;
+
+    QApplication::setQuitOnLastWindowClosed(false);
+
+    _systemTrayMenu = new QSystemTrayIcon(_app);
+    _systemTrayMenu->setIcon(QIcon(":/icons/Mastoid.png").pixmap(32));
+    _systemTrayMenu->setContextMenu(_menu);
+    _systemTrayMenu->show();
+}
+
+void SystemTrayMenu::disable() {
+    if (!_systemTrayMenu) return;
+
+    QApplication::setQuitOnLastWindowClosed(true);
+
+    _systemTrayMenu->hide();
+    delete _systemTrayMenu;
+    _systemTrayMenu = nullptr;
 }

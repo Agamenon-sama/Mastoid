@@ -7,7 +7,7 @@ Item {
     id: root
 
     property color labelColor: "#ddd"
-    property color themeColor: "#4c0080"
+    property color themeColor: Theme.accentColor
 
     Rectangle {
         id: settingsOverlay
@@ -60,7 +60,7 @@ Item {
                 id: title
 
                 text: "Settings"
-                color: labelColor
+                color: root.labelColor
                 font.pixelSize: 28
 
                 anchors {
@@ -85,9 +85,9 @@ Item {
 
                 gradient: Gradient {
                     orientation: Gradient.Horizontal
-                    GradientStop { position: 0.0; color: Qt.rgba(themeColor.r, themeColor.g, themeColor.b, 0) }
-                    GradientStop { position: 0.5; color: themeColor }
-                    GradientStop { position: 1.0; color: Qt.rgba(themeColor.r, themeColor.g, themeColor.b, 0) }
+                    GradientStop { position: 0.0; color: Qt.rgba(root.themeColor.r, root.themeColor.g, root.themeColor.b, 0) }
+                    GradientStop { position: 0.5; color: root.themeColor }
+                    GradientStop { position: 1.0; color: Qt.rgba(root.themeColor.r, root.themeColor.g, root.themeColor.b, 0) }
                 }
             }
 
@@ -106,7 +106,7 @@ Item {
                 // row 1
                 Label {
                     text: "Window Width"
-                    color: labelColor
+                    color: root.labelColor
                 }
 
                 SpinBox {
@@ -124,7 +124,7 @@ Item {
                 // row 2
                 Label {
                     text: "Window Height"
-                    color: labelColor
+                    color: root.labelColor
                 }
 
                 SpinBox {
@@ -141,7 +141,7 @@ Item {
                 // row 3
                 Label {
                     text: "Base Directory"
-                    color: labelColor
+                    color: root.labelColor
 
                     ToolTip {
                         id: baseDirToolTip
@@ -182,7 +182,7 @@ Item {
                         color: "transparent"
                         border {
                             width: 2
-                            color: bdBtnMA.containsMouse ? themeColor : "#222"
+                            color: bdBtnMA.containsMouse ? root.themeColor : "#222"
                         }
                     }
 
@@ -207,7 +207,7 @@ Item {
                 // row 4
                 Label {
                     text: "Run In System Tray"
-                    color: labelColor
+                    color: root.labelColor
 
                     ToolTip {
                         id: sysTrayToolTip
@@ -243,7 +243,7 @@ Item {
                         width: 60
                         height: 26
                         radius: 13
-                        color: sysTraySwitch.checked ? themeColor : "#444";
+                        color: sysTraySwitch.checked ? root.themeColor : "#444";
 
                         Rectangle {
                             width: 20
@@ -257,6 +257,12 @@ Item {
 
                     onClicked: {
                         AppConfiguration.runInTray = checked;
+                        if (checked) {
+                            SystemTrayMenu.enable();
+                        }
+                        else {
+                            SystemTrayMenu.disable();
+                        }
                     }
                 }
             }
@@ -284,7 +290,7 @@ Item {
                         color: "transparent"
                         border {
                             width: 2
-                            color: cancelBtnMA.containsMouse ? themeColor : "#222"
+                            color: cancelBtnMA.containsMouse ? root.themeColor : "#222"
                         }
                     }
 
@@ -313,7 +319,7 @@ Item {
                         color: "transparent"
                         border {
                             width: 2
-                            color: saveBtnMA.containsMouse ? themeColor : "#222"
+                            color: saveBtnMA.containsMouse ? root.themeColor : "#222"
                         }
                     }
 

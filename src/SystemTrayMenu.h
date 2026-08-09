@@ -6,28 +6,31 @@
 #include <QMenu>
 #include <QAction>
 
-#include "AppConfiguration.h"
-
 class SystemTrayMenu : public QObject
 {
     Q_OBJECT
 public:
-    SystemTrayMenu(QCoreApplication *app, const AppConfiguration &config);
+    SystemTrayMenu(QCoreApplication *app, bool runInTray);
 
 private:
-    QSystemTrayIcon *_systemTrayMenu;
-    QMenu *_menu;
-    QAction *_playAction;
-    QAction *_pauseAction;
-    QAction *_soundAction;
-    QAction *_restoreAction;
-    QAction *_quitAction;
+    QCoreApplication *_app;
+    QSystemTrayIcon *_systemTrayMenu = nullptr;
+    QMenu *_menu = nullptr;
+    QAction *_playAction = nullptr;
+    QAction *_pauseAction = nullptr;
+    QAction *_soundAction = nullptr;
+    QAction *_restoreAction = nullptr;
+    QAction *_quitAction = nullptr;
 
 signals:
     void play();
     void pause();
     void soundToggle();
     void restoreWindow();
+
+public slots:
+    void enable();
+    void disable();
 };
 
 #endif // SYSTEMTRAYMENU_H
