@@ -3,6 +3,8 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtQuick.Dialogs
 
+import "components"
+
 Item {
     id: root
 
@@ -233,27 +235,10 @@ Item {
                     }
                 }
 
-                Switch {
-                    id: sysTraySwitch
+                ToggleSwitch {
                     checked: AppConfiguration.runInTray
-
                     Layout.alignment: Qt.AlignRight
-
-                    indicator: Rectangle {
-                        width: 60
-                        height: 26
-                        radius: 13
-                        color: sysTraySwitch.checked ? root.themeColor : "#444";
-
-                        Rectangle {
-                            width: 20
-                            height: 20
-                            radius: 10
-                            x: sysTraySwitch.checked ? parent.width - width - 3 : 3
-                            y: (parent.height - height) / 2
-                            color: "#999"
-                        }
-                    }
+                    activeColor: Theme.accentColor
 
                     onClicked: {
                         AppConfiguration.runInTray = checked;
@@ -263,6 +248,43 @@ Item {
                         else {
                             SystemTrayMenu.disable();
                         }
+                    }
+                }
+
+                // row 5
+                Label {
+                    text: "Enabled Spectrum Effect"
+                    color: root.labelColor
+                }
+
+                ToggleSwitch {
+                    checked: AppConfiguration.spectrumEnabled
+                    Layout.alignment: Qt.AlignRight
+                    activeColor: Theme.accentColor
+
+                    onClicked: {
+                        AppConfiguration.spectrumEnabled = checked;
+
+                        spectrumAnalyzer.processingEnabled = AppConfiguration.spectrumEnabled || AppConfiguration.shaderEnabled;
+                        spectrum.requestPaint();
+                    }
+                }
+
+                // row 6
+                Label {
+                    text: "Enabled Shader Effect"
+                    color: root.labelColor
+                }
+
+                ToggleSwitch {
+                    checked: AppConfiguration.shaderEnabled
+                    Layout.alignment: Qt.AlignRight
+                    activeColor: Theme.accentColor
+
+                    onClicked: {
+                        AppConfiguration.shaderEnabled = checked;
+
+                        spectrumAnalyzer.processingEnabled = AppConfiguration.spectrumEnabled || AppConfiguration.shaderEnabled;
                     }
                 }
             }
@@ -276,12 +298,12 @@ Item {
                 }
 
                 Button {
-                    id: cancelBtn
+                    id: closeBtn
 
-                    text: "Cancel"
+                    text: "Close"
 
                     contentItem: Text {
-                        text: cancelBtn.text
+                        text: closeBtn.text
                         color: "#ddd"
                         padding: 10
                     }
@@ -290,12 +312,12 @@ Item {
                         color: "transparent"
                         border {
                             width: 2
-                            color: cancelBtnMA.containsMouse ? root.themeColor : "#222"
+                            color: closeBtnMA.containsMouse ? root.themeColor : "#222"
                         }
                     }
 
                     MouseArea {
-                        id: cancelBtnMA
+                        id: closeBtnMA
                         anchors.fill: parent
                         hoverEnabled: true
                         cursorShape: Qt.PointingHandCursor

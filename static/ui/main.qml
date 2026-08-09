@@ -31,6 +31,8 @@ ApplicationWindow {
     }
 
     Spectrum {
+        id: spectrum
+
         anchors {
             top: parent.top
             bottom: playerBlock.top

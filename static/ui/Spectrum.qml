@@ -4,6 +4,9 @@ Item {
     id: root
 
     property color color: Theme.accentColor
+    property bool enabled: AppConfiguration.spectrumEnabled
+
+    function requestPaint() { spectrumCanvas.requestPaint(); }
 
     Behavior on color {
         ColorAnimation { duration: 400; easing.type: Easing.OutCubic }
@@ -20,39 +23,31 @@ Item {
             right: parent.right
         }
 
-        // onPaint: {
-        //     var ctx = getContext("2d");
-        //     ctx.clearRect(0, 0, width, height);
-        //     ctx.fillStyle = "#882d9b"
-        //     var mags = spectrumAnalyzer.magnitudes;
-        //     var barWidth = width / mags.length;
-        //     for (var i = 0; i < mags.length; i++) {
-        //         var h = mags[i] * height;
-        //         ctx.fillRect(i * barWidth, height - h, barWidth - 1, h);
-        //     }
-        // }
-
         onPaint: {
-                var ctx = getContext("2d");
-                ctx.clearRect(0, 0, width, height);
-                ctx.fillStyle = root.color // "#882d9b"
+            var ctx = getContext("2d");
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = root.color
 
-                var left = spectrumAnalyzer.leftMagnitudes;
-                var right = spectrumAnalyzer.rightMagnitudes;
-                var barWidth = width / left.length;
-                var midY = height / 2;
-
-                for (var i = 0; i < left.length; i++) {
-                    var lh = left[i] * midY;
-                    var rh = right[i] * midY;
-                    ctx.fillRect(i * barWidth, midY - lh, barWidth - 1, lh);       // up
-                    ctx.fillRect(i * barWidth, midY, barWidth - 1, rh);            // down
-                }
+            var left = [];
+            var right = [];
+            if (root.enabled) {
+                left = spectrumAnalyzer.leftMagnitudes;
+                right = spectrumAnalyzer.rightMagnitudes;
             }
+            var barWidth = width / left.length;
+            var midY = height / 2;
+
+            for (var i = 0; i < left.length; i++) {
+                var lh = left[i] * midY;
+                var rh = right[i] * midY;
+                ctx.fillRect(i * barWidth, midY - lh, barWidth - 1, lh);       // up
+                ctx.fillRect(i * barWidth, midY, barWidth - 1, rh);            // down
+            }
+        }
 
         Connections {
             target: spectrumAnalyzer
-            function onMagnitudesChanged() { spectrumCanvas.requestPaint() }
+            function onMagnitudesChanged() { spectrumCanvas.requestPaint(); }
         }
     }
 }

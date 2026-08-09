@@ -50,6 +50,8 @@ void AppConfiguration::save() const {
         {"window_height", false},
         {"base_directory", false},
         {"run_in_system_tray", false},
+        {"spectrum_enabled", false},
+        {"shader_enabled", false},
     };
 
     qDebug() << "Started reading config file...";
@@ -87,6 +89,16 @@ void AppConfiguration::save() const {
             savedConfigOptions["run_in_system_tray"] = true;
             continue;
         }
+        else if (key == "spectrum_enabled") {
+            tmpBuffer += key + "=" + (_spectrumEnabled ? "true" : "false") + rest + "\n";
+            savedConfigOptions["spectrum_enabled"] = true;
+            continue;
+        }
+        else if (key == "shader_enabled") {
+            tmpBuffer += key + "=" + (_shaderEnabled ? "true" : "false") + rest + "\n";
+            savedConfigOptions["shader_enabled"] = true;
+            continue;
+        }
         else {
             tmpBuffer += line + "\n";
             continue;
@@ -116,6 +128,16 @@ void AppConfiguration::save() const {
                 savedConfigOptions["run_in_system_tray"] = true;
                 continue;
             }
+            else if (it.key() == "spectrum_enabled") {
+                tmpBuffer += it.key() + "=" + (_spectrumEnabled ? "true" : "false") + "\n";
+                savedConfigOptions["spectrum_enabled"] = true;
+                continue;
+            }
+            else if (it.key() == "shader_enabled") {
+                tmpBuffer += it.key() + "=" + (_shaderEnabled ? "true" : "false") + "\n";
+                savedConfigOptions["shader_enabled"] = true;
+                continue;
+            }
         }
     }
 
@@ -132,6 +154,7 @@ void AppConfiguration::save() const {
     qInfo() << "Updated configuration file successfully";
 }
 
+// getters
 int AppConfiguration::width() const {
     return _width;
 }
@@ -148,6 +171,15 @@ bool AppConfiguration::runInTray() const {
     return _runInTray;
 }
 
+bool AppConfiguration::spectrumEnabled() const {
+    return _spectrumEnabled;
+}
+
+bool AppConfiguration::shaderEnabled() const {
+    return _shaderEnabled;
+}
+
+// setters
 void AppConfiguration::setWidth(int width) {
     if (_width == width) {
         return;
@@ -182,6 +214,24 @@ void AppConfiguration::setRunInTray(bool run) {
 
     _runInTray = run;
     emit runInTrayChanged();
+}
+
+void AppConfiguration::setSpectrumEnabled(bool enabled) {
+    if (_spectrumEnabled == enabled) {
+        return;
+    }
+
+    _spectrumEnabled = enabled;
+    emit spectrumEnabledChanged();
+}
+
+void AppConfiguration::setShaderEnabled(bool enabled) {
+    if (_shaderEnabled == enabled) {
+        return;
+    }
+
+    _shaderEnabled = enabled;
+    emit shaderEnabledChanged();
 }
 
 void AppConfiguration::_parseConfig() {
@@ -222,6 +272,18 @@ void AppConfiguration::_parseConfig() {
         else if (key == "run_in_system_tray") {
             if (value.toLower() == "false") {
                 _runInTray = false;
+            }
+            continue;
+        }
+        else if (key == "spectrum_enabled") {
+            if (value.toLower() == "false") {
+                _spectrumEnabled = false;
+            }
+            continue;
+        }
+        else if (key == "shader_enabled") {
+            if (value.toLower() == "false") {
+                _shaderEnabled = false;
             }
             continue;
         }

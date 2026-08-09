@@ -48,6 +48,7 @@ Rectangle {
             property real u_treble: spectrumAnalyzer.treble
             property real u_beat: spectrumAnalyzer.beat
             property real u_time: player.position
+            property bool u_audioEffect: AppConfiguration.shaderEnabled
 
             width: backImage.width
             height: backImage.height

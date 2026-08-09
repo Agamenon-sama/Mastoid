@@ -18,5 +18,6 @@
         <file>ui/Spectrum.qml</file>
         <file>ui/qmldir</file>
         <file>ui/Theme.qml</file>
+        <file>ui/components/ToggleSwitch.qml</file>
     </qresource>
 </RCC>

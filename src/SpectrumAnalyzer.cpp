@@ -43,6 +43,15 @@ SpectrumAnalyzer::~SpectrumAnalyzer() {
     if (_fftInLeft) fftwf_free(_fftInLeft);
 }
 
+void SpectrumAnalyzer::setProcessingEnabled(bool enabled) {
+    if (_processingEnabled == enabled) {
+        return;
+    }
+
+    _processingEnabled = enabled;
+    emit processingEnabledChanged();
+}
+
 template<typename T>
 inline float normalizeSample(T value);
 
@@ -107,7 +116,7 @@ float bandPower(const fftwf_complex *fftOut, int startBin, int endBin, float nor
 }
 
 void SpectrumAnalyzer::processBuffer(const QAudioBuffer &buffer) {
-    if (!buffer.isValid() || buffer.frameCount() == 0)
+    if (!buffer.isValid() || buffer.frameCount() == 0 || !_processingEnabled)
         return;
 
     if (buffer.format().sampleRate() != _sampleRate) {
@@ -142,7 +151,7 @@ void SpectrumAnalyzer::processBuffer(const QAudioBuffer &buffer) {
 }
 
 void SpectrumAnalyzer::computeSpectrum() {
-    if (!_leftBuffer.hasEnoughSamples(kFftSize)) {
+    if (!_leftBuffer.hasEnoughSamples(kFftSize) || !_processingEnabled) {
         return;
     }
 

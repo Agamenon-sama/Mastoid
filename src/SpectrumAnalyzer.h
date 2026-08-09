@@ -17,6 +17,7 @@
 class SpectrumAnalyzer : public QObject {
     Q_OBJECT
     Q_PROPERTY(QAudioBufferOutput* bufferOutput READ bufferOutput CONSTANT)
+    Q_PROPERTY(bool processingEnabled READ processingEnabled WRITE setProcessingEnabled NOTIFY processingEnabledChanged)
     Q_PROPERTY(QVariantList leftMagnitudes READ leftMagnitudes NOTIFY magnitudesChanged)
     Q_PROPERTY(QVariantList rightMagnitudes READ rightMagnitudes NOTIFY magnitudesChanged)
     Q_PROPERTY(qreal bass READ bass NOTIFY magnitudesChanged)
@@ -28,14 +29,18 @@ public:
     ~SpectrumAnalyzer();
 
     QAudioBufferOutput *bufferOutput() const { return _bufferOutput; }
+    bool processingEnabled() const { return _processingEnabled; }
     QVariantList leftMagnitudes() const { return _leftMagnitudes; }
     QVariantList rightMagnitudes() const { return _rightMagnitudes; }
     qreal bass() const { return _bassLevel; }
     qreal treble() const { return _trebleLevel; }
     qreal beat() const { return _beatPulse; }
 
+    void setProcessingEnabled(bool enabled);
+
 signals:
     void magnitudesChanged();
+    void processingEnabledChanged();
 
 private slots:
     void processBuffer(const QAudioBuffer &buffer);
@@ -43,6 +48,7 @@ private slots:
 
 private:
     QAudioBufferOutput *_bufferOutput;
+    bool _processingEnabled = true;
     QVariantList _leftMagnitudes;
     QVariantList _rightMagnitudes;
     float _bassLevel = 0.f;
