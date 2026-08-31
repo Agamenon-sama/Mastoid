@@ -40,7 +40,8 @@ Rectangle {
             }
         }
 
-        onStatusChanged: if (status === Image.Ready) themeCanvas.requestPaint()
+        onStatusChanged: if (status === Image.Ready) themeCanvas.requestPaint();
+        onSourceChanged: Mpris.updateCoverArt(source);
     }
 
     QtObject {

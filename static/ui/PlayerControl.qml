@@ -38,6 +38,11 @@ Rectangle {
         playIcon.source = "qrc:/icons/play.svg"
     }
 
+    function seek(v) {
+        player.setPosition(v);
+        Mpris.notifySeeked(v * 1000);
+    }
+
     ColumnLayout {
         anchors.fill: parent
         Item {
@@ -70,7 +75,7 @@ Rectangle {
                     to: 1.0
                     value: player.position / player.duration
 
-                    onMoved: player.setPosition(value * player.duration)
+                    onMoved: seek(value * player.duration)
 
                     background: Rectangle {
                         x: playbackSlider.leftPadding
@@ -211,10 +216,10 @@ Rectangle {
                     onActivated: {
                         // todo: maybe test if I need to check if the player is on or not
                         if (playbackSlider.value * player.duration + seekTime > player.duration) {
-                            player.setPosition(player.duration);
+                            seek(player.duration);
                         }
                         else {
-                            player.setPosition(playbackSlider.value * player.duration + seekTime)
+                            seek(playbackSlider.value * player.duration + seekTime);
                         }
                     }
                 }
@@ -223,10 +228,10 @@ Rectangle {
                     onActivated: {
                         // the if statement might be useless from what I test
                         if (playbackSlider.value * player.duration - seekTime < 0) {
-                            player.setPosition(0);
+                            seek(0);
                         }
                         else {
-                            player.setPosition(playbackSlider.value * player.duration - seekTime)
+                            seek(playbackSlider.value * player.duration - seekTime);
                         }
                     }
                 }
@@ -240,7 +245,7 @@ Rectangle {
                         value: index
                         Connections {
                             function onPressed(key) {
-                                player.setPosition((key * 0.1) * player.duration);
+                                seek((key * 0.1) * player.duration);
                             }
                         }
                     }
@@ -444,14 +449,71 @@ Rectangle {
             }
         }
 
-        function onSeekRequest(x) {
-            player.position += x/1000; // x is in microseconds
+        function onSeekRequest(offsetUs) {
+            // player.position += offsetUs / 1000; // offsetUs is in microseconds
+            seek(player.position + offsetUs / 1000);
         }
 
         function onOpenUriRequest(uri) {
             player.source = uri;
             play();
         }
+
+        function onSetPositionRequest(positionUs) {
+            seek(positionUs / 1000);
+        }
+
+        function onVolumeChangeRequest(v) {
+            volumeSlider.value = v * 100.0;
+        }
+
+        function onLoopStatusChangeRequest(status) {
+            switch (status) {
+            case "None":
+                root.endPolicy = PlayerControl.EndPolicy.End;
+                break;
+            case "Track":
+                root.endPolicy = PlayerControl.EndPolicy.Loop;
+                break;
+            case "Playlist":
+                root.endPolicy = PlayerControl.EndPolicy.PlayNext;
+                break;
+            }
+        }
+    }
+
+    Connections {
+        target: player
+
+        function onMetaDataChanged() {
+
+            var meta = {};
+
+            for (var key of player.metaData.keys()) {
+                meta[player.metaData.metaDataKeyToString(key)] = player.metaData.stringValue(key);
+            }
+
+            var artists = [];
+            if (meta["Album artist"] !== undefined) artists.push(meta["Album artist"])
+            if (meta["Contributing artist"] !== undefined) artists.push(meta["Contributing artist"])
+
+            Mpris.updateMetadata(
+                meta["Track number"] || 0,
+                meta["Title"] || currentSongName.text,
+                artists.length === 0 ? "Unknown Artist" : artists,
+                meta["Album title"],
+                player.duration * 1000 // microseconds
+            );
+        }
+
+        function onPositionChanged() {
+            Mpris.updatePosition(player.position * 1000) // ms -> µs
+        }
+
+        // function onSeeked(newPositionMs) {
+        //     // user or app jumped the position (not natural playback progress)
+        //     Mpris.notifySeeked(newPositionMs * 1000)
+        // }
     }
 
     Component.onCompleted: {

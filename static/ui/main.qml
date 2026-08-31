@@ -111,6 +111,24 @@ ApplicationWindow {
                 }
             }
 
+            onPlaybackStateChanged: {
+                var state = "Stopped";
+
+                switch(player.playbackState) {
+                case MediaPlayer.PlayingState:
+                    state = "Playing";
+                    break;
+                case MediaPlayer.PausedState:
+                    state = "Paused";
+                    break;
+                case MediaPlayer.StoppedState:
+                    state = "Stopped";
+                    break;
+                }
+
+                Mpris.updatePlaybackStatus(state);
+            }
+
             onErrorOccurred: (error, errorString) => {
                 switch (error) {
                 case 1:
